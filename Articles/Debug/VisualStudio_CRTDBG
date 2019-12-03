@@ -1,3 +1,9 @@
+#include <stdlib.h>
+#include <crtdbg.h>
+
+// When the _CRTDBG_MAP_ALLOC flag is defined in the debug version of an application, 
+// the base version of the heap functions are directly mapped to their debug versions. 
+// The flag is used in Crtdbg.h to do the mapping. This flag is only available when the _DEBUG flag has been defined in the application.
 // Note: Define it after header file inclusion otherwise application debugging will be very slow as the mapping will also be enabled in header file.
 #define _CRTDBG_MAP_ALLOC
 
