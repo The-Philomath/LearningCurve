@@ -1,3 +1,7 @@
+## About
+This article is an overview of using debugging in Visual studio using CRT(C Run-Time) library APIs. Make sure that code is in compiled in debug mode
+
+------
 ```
 #include <stdlib.h>
 #include <crtdbg.h>
@@ -21,28 +25,27 @@ int main()
     return 0;
 }
 ```
+------
 
 **Sample Output:-** 
 
-  *Detected memory leaks!*
-  
-  *Dumping objects ->*
-  
-  *{73} normal block at 0x006260F8, 4 bytes long.*
-  
-  *Data: <    > 03 00 00 00*
-  
-  *Object dump complete.*
+  _Detected memory leaks!  
+   Dumping objects ->  
+   {73} normal block at 0x006260F8, 4 bytes long.  
+    Data: <    > 03 00 00 00  
+   Object dump complete._
 
-This shows that memory block number 73 address 0x006260F8 had allocated a memory of 4 bytes.
-03 is stored at first byte as my system is little endian.
+This shows that memory block number **73** address **0x006260F8** had allocated a memory of **4 bytes**.
+**03** is stored at first byte as my system is little endian.
 This memory got leaked.
 
 But it is not pointing out to the exact location where memory was allocated and which was not freed.
 
-To find out exact location we will put a break point on block number 73 which is not freed.
+To find out exact location we will put a break point on block number **73** which is not freed.
 
+------
 ```
+{
     _CrtSetBreakAlloc(73);
     // Turn on debug allocation | Leak Check at program Exit
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
@@ -51,7 +54,9 @@ break ==>   int *p = new int(3);
 
     // Dumps all the memory blocks in the debug heap when a memory leak has occurred
     _CrtDumpMemoryLeaks();
+}
 ```
+------
 
 Code will hit the break point and we can figure out which memory was not freed.
 
