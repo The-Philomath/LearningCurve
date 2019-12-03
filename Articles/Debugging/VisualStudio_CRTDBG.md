@@ -2,7 +2,7 @@
 This article is an overview of using debugging in Visual studio using CRT(C Run-Time) library APIs. Make sure that code is in compiled in debug mode
 
 ------
-```
+```cpp
 #include <stdlib.h>
 #include <crtdbg.h>
 
@@ -44,7 +44,7 @@ But it is not pointing out to the exact location where memory was allocated and 
 To find out exact location we will put a break point on block number **73** which is not freed.
 
 ------
-```
+```cpp
 {
     _CrtSetBreakAlloc(73);
     // Turn on debug allocation | Leak Check at program Exit
