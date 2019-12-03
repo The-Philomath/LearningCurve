@@ -1,5 +1,5 @@
 ## About
-This article is an overview of using debugging in Visual studio using CRT(C Run-Time) library APIs. Make sure that code is in compiled in debug mode
+This article is an overview of using debugging in Visual studio using CRT(C Run-Time) library APIs. Make sure that code is compiled in debug mode
 
 ------
 ```cpp
