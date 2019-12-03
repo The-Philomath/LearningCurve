@@ -111,7 +111,7 @@ int main()
 **Console Output:-**
 
   _mem leak at main  
-   c:\users\rp101849\documents\visual studio 2015\projects\test\test\main.cpp_
+   c:\users\ThePhilomath\documents\visual studio 2015\projects\test\test\main.cpp_
 
 There is one shortcoming of this method that we have to but the checks in every suspected function beforehand.
 
