@@ -179,6 +179,67 @@ int main()
 This way we only need to add **CRT_CHECKPOINT** macro in every suspected funcion.
 
 
+-----
+Helper.h
+```cpp
+#pragma once
+#include <stdlib.h>
+#include <crtdbg.h>
+#include <iostream>
+
+#define _CRTDBG_MAP_ALLOC
+
+class CrtStateChecker
+{
+    const char *pfName;
+    const char *pfuncName;
+    _CrtMemState beg, end, diff;
+public:
+    CrtStateChecker(const char *file, const char *function)
+    {
+        pfName = file;
+        pfuncName = function;
+        _CrtMemCheckpoint(&beg);
+    }
+    ~CrtStateChecker()
+    {
+        _CrtMemCheckpoint(&end);
+        if (_CrtMemDifference(&diff, &beg, &end) == 1)
+        {
+            _CrtMemDumpStatistics(&diff);
+            std::cout << "mem leak at" << std::endl << pfuncName;
+            std::cout << std::endl << pfName << std::endl;
+        }
+    }
+};
+
+#define CRT_CHECKPOINT CrtStateChecker obj(__FILE__, __FUNCSIG__)
+```
+
+Main.cpp
+
+```cpp
+#include "DebugHelper.h"
+
+char* process()
+{
+    CRT_CHECKPOINT;
+    char* buff = new(_NORMAL_BLOCK, __FILE__, __LINE__) char(5);
+    return buff;
+}
+
+int main()
+{
+    process();
+
+    system("pause");
+    return 0;
+}
+```
+-----
+
+This way we only need to add **CRT_CHECKPOINT** macro in every suspected funcion.
+
 ### Authors
 
 * **The Philomath**
