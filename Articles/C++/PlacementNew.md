@@ -4,7 +4,7 @@ Better understanding of placement new help in better memory handling and avoidin
 
 Syntax of a new expression
 ```cpp
-new (placement_params) ( type ) initializer
+new ( placement_params ) ( type ) initializer
 ```
 
 In new expression if the placement_params are not NULL and an already allocated memory reference is povided then its known as a placement new.
