@@ -39,7 +39,7 @@ int main()
 
 **Never try to call delete on pointer which was allocated by placement new**
 
-As it is not the responsibility of the pointer('a' in this example) to release the memory. Memory should be released by whom the pointer was allocated.
+As it is not the responsibility of the pointer('a' in this example) to release the memory. We don't know for sure whether the source buffer was allocated from heap or stack.
 
 **Output:-**
 
