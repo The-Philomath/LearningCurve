@@ -34,7 +34,7 @@
 int CheckWinner(vector<int>& nums, int start, int end) {
         if( start == end ) return nums[start];
         
-        return max( nums[start] - CheckWinner(nums, start + 1, end)),
+        return max( nums[start] - CheckWinner(nums, start + 1, end),
                     nums[end] - CheckWinner(nums, start, end-1));
     }
 
@@ -44,17 +44,18 @@ bool PredictTheWinner(vector<int>& nums) {
 
 // Recursive memoization
 
-int CheckWinner(vector<vector<int>>& mem, vector<int> nums, int start, int end){
+int CheckWinner(vector<vector<int>>& mem, vector<int>& nums, int start, int end){
         if(start == end) return nums[start];
         if(mem[start][end] != INT_MIN) return mem[start][end];
         
-        return max( nums[start] - CheckWinner(nums, start + 1, end)),
-                    nums[end] - CheckWinner(nums, start, end-1));
+        return std::max( nums[start] - CheckWinner(mem, nums, start + 1, end),
+                         nums[end] - CheckWinner(mem, nums, start, end - 1));
     }
         
-bool PredictTheWinner(<int>& nums) {
+bool PredictTheWinner(vector<int>& nums) {
         vector<vector<int>> mem (nums.size(),vector<int>(nums.size(), INT_MIN));
         return CheckWinner(mem, nums, 0, nums.size() - 1 ) >= 0;
     }
+
 // DP Solution
 
