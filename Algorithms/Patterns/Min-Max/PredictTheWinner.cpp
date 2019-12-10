@@ -41,3 +41,20 @@ int CheckWinner(vector<int>& nums, int start, int end) {
 bool PredictTheWinner(vector<int>& nums) {
         return CheckWinner(nums, 0, nums.size() - 1 ) >= 0;
     }
+
+// Recursive memoization
+
+int CheckWinner(vector<vector<int>>& mem, vector<int> nums, int start, int end){
+        if(start == end) return nums[start];
+        if(mem[start][end] != INT_MIN) return mem[start][end];
+        
+        return max( nums[start] - CheckWinner(nums, start + 1, end)),
+                    nums[end] - CheckWinner(nums, start, end-1));
+    }
+        
+bool PredictTheWinner(<int>& nums) {
+        vector<vector<int>> mem (nums.size(),vector<int>(nums.size(), INT_MIN));
+        return CheckWinner(mem, nums, 0, nums.size() - 1 ) >= 0;
+    }
+// DP Solution
+
