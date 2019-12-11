@@ -5,6 +5,30 @@ In **Top Down approach** we break down the problem in subsets in a recursive fun
 
 Its like a tree having multiple similar nodes. If we know the solution of one of the node (say A). We can use it as the solution of node B which has a similar tree structure as of Node A.
 
+Memoization array size depends on the recursion factors which varies on each recursion. like in a 0-1 knapsack the current remaining capacity and weights.
+
+```cpp
+
+// mem[weight.size()][cap +1] will be a vetor which we can take globally or pass as a reference
+
+int knapsack(vector<vector<int>>& mem, vector<int>& weight, value<int>& value, int i, int cap) {
+    if(cap < 0) return INT_MIN;
+ 
+    if(i == weight.size()) return 0;
+    
+    // check if the value for (i, cap) has already been computed
+    if(mem[i][cap] != null) return mem[i][cap];
+    
+    // do not take item i
+    double skip = knapsack(i + 1, cap);
+    // take item i
+    double take = value[i] + knapsack(i + 1, cap - weight[i]);
+    
+    // memorize the value of (i, cap)
+    mem[i][cap] = std::max(skip, take);
+    return mem[i][cap];
+}
+```
 
 In **Bottom Up approach** we start with smallest subproblem of main probleem and solve it. Next time we will take a bigger subproblem and solve that with help of already known solutions. That means we are redefining the problem set at every step. Its an iterative approach unlike Top Down which is a recursive approach.
 
