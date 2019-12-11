@@ -34,7 +34,7 @@ int knapsack(vector<int>& value, vector<int>& weight, int cap ) {
     
     // base cases
     for(int i = 0; i <= cap; i++) {
-        prob[0][i] = cap - w[0] >= 0 ? value[0] : 0;
+        prob[0][i] = cap - weight[0] >= 0 ? value[0] : 0;
     }
     
     for(int i = 1; i < n; i++) {
