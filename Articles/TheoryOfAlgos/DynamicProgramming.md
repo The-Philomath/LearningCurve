@@ -71,6 +71,8 @@ int knapsack(vector<int>& value, vector<int>& weight, int cap ) {
     return prob[n - 1][cap];
 }
 ```
+
+Further Reference:- https://inginious.org/course/competitive-programming/dp-memory-reduction
 ### Authors
 
 * **The Philomath**
