@@ -2,7 +2,7 @@
 // Author  : The Philomath
 // Date    : 10-12-2019
 
-/********************************************************************************** 
+/**********************************************************************************
 *
 * Given an array of scores that are non-negative integers.
 * Player 1 picks one of the numbers from either end of the array followed by the player 2 and then player 1 and so on.
@@ -33,7 +33,7 @@
 
 int CheckWinner(vector<int>& nums, int start, int end) {
         if( start == end ) return nums[start];
-        
+
         return max( nums[start] - CheckWinner(nums, start + 1, end),
                     nums[end] - CheckWinner(nums, start, end-1));
     }
@@ -47,11 +47,13 @@ bool PredictTheWinner(vector<int>& nums) {
 int CheckWinner(vector<vector<int>>& mem, vector<int>& nums, int start, int end){
         if(start == end) return nums[start];
         if(mem[start][end] != INT_MIN) return mem[start][end];
-        
-        return std::max( nums[start] - CheckWinner(mem, nums, start + 1, end),
+
+        mem[start][end] = std::max( nums[start] - CheckWinner(mem, nums, start + 1, end),
                          nums[end] - CheckWinner(mem, nums, start, end - 1));
+
+        return mem[start][end];
     }
-        
+
 bool PredictTheWinner(vector<int>& nums) {
         vector<vector<int>> mem (nums.size(),vector<int>(nums.size(), INT_MIN));
         return CheckWinner(mem, nums, 0, nums.size() - 1 ) >= 0;
