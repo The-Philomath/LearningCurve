@@ -42,7 +42,7 @@ bool PredictTheWinner(vector<int>& nums) {
         return CheckWinner(nums, 0, nums.size() - 1 ) >= 0;
     }
 
-// Recursive memoization
+// Recursive memoization / DP Top Down 
 
 int CheckWinner(vector<vector<int>>& mem, vector<int>& nums, int start, int end){
         if(start == end) return nums[start];
@@ -59,6 +59,8 @@ bool PredictTheWinner(vector<int>& nums) {
         return CheckWinner(mem, nums, 0, nums.size() - 1 ) >= 0;
     }
 
-// DP Solution
-
-//https://algorithms.tutorialhorizon.com/dynamic-programming-coin-in-a-line-game-problem/
+// DP Bottom up Solution
+// Smallest subproblem can be considered as there is only one element in array so the score of player 1 will be equal to that // element.
+// we can create bigger subproblem with the solution of this problem. considering the 2 elements(interval) at a time then 3 // and so on upto n.
+// For every such interval if we choose the the first element of interval then opponent must have chosen the 
+// https://algorithms.tutorialhorizon.com/dynamic-programming-coin-in-a-line-game-problem/
