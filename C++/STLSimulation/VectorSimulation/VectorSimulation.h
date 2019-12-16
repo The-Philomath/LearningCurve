@@ -25,12 +25,12 @@ template<typename T>
 inline void vec<T>::push(int data)
 {
 	++sz;
-	T* temp = new T(sz);
+	T *temp = new T[sz];
 	for (unsigned int i = 0; i < sz - 1; i++)
 	{
 		*(temp + i) = *(arr + i);
 	}
 	*(temp + sz - 1) = data;
-	delete arr;
+	delete []arr;
 	arr = temp;
 }

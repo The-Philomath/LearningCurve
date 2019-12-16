@@ -147,10 +147,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="VectorSimulation.cpp" />
+    <ClInclude Include="VectorSimulation.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="VectorSimulation.h" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
