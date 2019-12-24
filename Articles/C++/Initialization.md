@@ -14,8 +14,8 @@ struct Class
 
 int main()
 {
-    Class<std::string> a = std::string("abc"); // copy initialization
-    Class<std::string> b = "abc";    // error , copy initialization
+    Class<std::string> a = std::string("abc"); // copy-initialization
+    Class<std::string> b = "abc";    // error , copy-initialization
     std::cout << a.data << std::endl;
     return 0;
 }
@@ -30,16 +30,17 @@ But at max only one conversion is allowed.
 
 We can use direct-initialization in place of copy-initialization to solve this problems.
 ```cpp
-Class<std::string> b("abc");
+Class<std::string> b("abc");    // direct-initialization
 ```
 
 Now there will be only one conversion and that will be
+
 From  _const char *_ to _std::string_
 
-Further we can also use uniform-initialization inplace of both the initliaztion specified in main
+Further we can also use uniform-initialization inplace of both the initialization specified in main
 ```cpp
-Class<std::string> a{ std::string("abc") }; // uniform initialization
-Class<std::string> b{ "abc" };    // uniform initialization
+Class<std::string> a{ std::string("abc") }; // uniform-initialization
+Class<std::string> b{ "abc" };    // uniform-initialization
 ```
 
 ### Authors
