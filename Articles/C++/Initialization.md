@@ -150,7 +150,8 @@ Why? Initializer lists use the same syntax as uniform initialization. So there h
 
 In order to get the sizing constructor, you must use () instead of {}
 
-[StackOverflow]: (https://softwareengineering.stackexchange.com/questions/133688/is-c11-uniform-initialization-a-replacement-for-the-old-style-syntax/133690#133690)
+#### References
+[StackOverflow](https://softwareengineering.stackexchange.com/questions/133688/is-c11-uniform-initialization-a-replacement-for-the-old-style-syntax/133690#133690)
 
 ### Authors
 
