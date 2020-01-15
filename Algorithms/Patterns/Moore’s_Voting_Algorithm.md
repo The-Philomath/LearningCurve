@@ -1,2 +1,2 @@
 #### Problems
-[N/3_RepeatNumber](N3_Repeat_Number.cpp)
+[N/3_RepeatNumber](../InterviewBit/N3_Repeat_Number.cpp)
