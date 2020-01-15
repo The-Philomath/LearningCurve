@@ -24,3 +24,7 @@ findCandidate(a[], size)
 [N/3_RepeatNumber](../InterviewBit/N3_Repeat_Number.cpp)
 
 [majorityElement](https://www.geeksforgeeks.org/majority-element/)
+
+### Authors
+
+* **The Philomath**
