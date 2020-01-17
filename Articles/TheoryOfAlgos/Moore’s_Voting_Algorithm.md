@@ -21,7 +21,7 @@ findCandidate(a[], size)
 3.  Return a[maj_index]
 
 #### Problems
-[N/3_RepeatNumber](../InterviewBit/N3_Repeat_Number.cpp)
+[N/3_RepeatNumber](../../Algorithms/InterviewBit/N3_Repeat_Number.cpp)
 
 [majorityElement](https://www.geeksforgeeks.org/majority-element/)
 

@@ -32,9 +32,9 @@ Loop for each element of the array
 This will only work if there is at least one positive element in array
 
 #### Problems
-[Largest Sum Contiguous Subarray](../LeetCode/53.cpp)
+[Largest Sum Contiguous Subarray](../../Algorithms/LeetCode/53.cpp)
 
-[flip Array](../InterviewBit/flip.cpp)
+[flip Array](../../Algorithms/InterviewBit/flip.cpp)
 
 ### Authors
 
