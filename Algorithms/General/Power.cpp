@@ -22,3 +22,12 @@ long long power(int A, int expo)
   }
   return res;
 }
+
+// can also be viewed as if expo varies from 0 to 1001
+
+const int tope=1001;
+long long int expo[tope];
+expo[0] = 1;
+for (int i = 1; i < tope; i += 1) {
+    expo[i] = (A * expo[i-1]) % modulo;
+}

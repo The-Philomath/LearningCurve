@@ -19,3 +19,27 @@ long long int combination(int n,int r){
     }
     return C[r];
 }
+
+//can be viewed as
+
+typedef long long int lint;
+
+const int tope=1001;
+
+lint combi[tope][tope];
+bool flag;
+
+void precompute() {
+    if(flag) return;
+    flag = 1;
+    for(int n = 0; n < tope; n += 1) {
+        for(int k = 0; k <= n; k += 1) {
+            if (k == 0 or k == n) {
+                combi[n][k] = 1;
+            }
+            else {
+                combi[n][k] = (combi[n-1][k] + combi[n-1][k-1]);
+            }
+        }
+    }
+}
