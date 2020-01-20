@@ -58,6 +58,9 @@ In the example below, the `negate<int>()`` creates a function object from the pr
 
 The second `transform()` algorithm combines the elements from two vector containers by using `multiplies<int>()` operation. Then it writes the results into the 3rd vector container.
 
+#### References
+[BogoToBogo](https://www.bogotobogo.com/cplusplus/functors.php)
+
 ### Authors
 
 * **The Philomath**
