@@ -1,5 +1,5 @@
 ## About
-Functors or function objects are the objects of a class which has overloaded function call operator i.e. `()`. Objects of Functor call can behave like a function call.
+Functors or function objects are the objects of a class which has overloaded function call operator i.e. `()`. Objects of Functor can behave like a function call.
 
 Functor call is not a function call. Unlike functions functors do have states. And we can use functors as callable, wherever we need to pass a callable like in the comparators.
 
