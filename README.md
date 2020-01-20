@@ -1,12 +1,12 @@
-# :sweat_drops: LearningCurve
+# :mortar_board: LearningCurve
 Contains C++ reading material and competitive coding problems solutions. Feel free to contribute anything related to C++ or any algorithm in genric.
 
 ## Bio 
 **Username** : The-Philomath <br />
 **Linkedin :** [@The-Philomath](www.linkedin.com/in/ramandeep-punia)
 
-| Sites Active | Handle | Problems Solved |
-| :--: | :--: | :--: |
+| Sites Active | Handle |
+| :--: | :--: |
 | CodeChef | [@The-Philomath](https://www.codechef.com/users/ramandeeppunia) |
 | Codeforces | [@The-Philomath](http://codeforces.com/profile/punia.ramandeep) |
 | HackerEarth | [@The-Philomath](https://www.hackerearth.com/@ramandeep_punia) |
