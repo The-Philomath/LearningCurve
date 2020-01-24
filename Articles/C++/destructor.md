@@ -72,7 +72,7 @@ int main()
 
 From the above example its clear that if there is some resource allocation in Derived constructor then that will not get freed as derived's destructor is not get called. To call the derived's destructor destructor of base class should be virtual.
 
-    virtual ~Derived();
+    virtual ~Base();
 
 **Output:-**
 
