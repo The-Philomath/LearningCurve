@@ -17,10 +17,70 @@ We should always make destructors as `virtual` if we are going to get the suppor
 
 Let's take an example:-
 ```cpp
+#include<iostream>
 
+class Base
+{
+   public:
+   Base()
+   {
+       std::cout<<"Base constructor"<<std::endl;
+   }
+   virtual void display()
+   {
+       std::cout<<"Base class";
+   }
+   ~Base()
+   {
+       std::cout<<"Base destructor"<<std::endl;
+   }
+};
+class Derived:public Base
+{
+   public:
+   Derived()
+   {
+       std::cout<<"Derived constructor"<<std::endl;
+   }
+   void display()
+   {
+       std::cout<<"Derived class"<<std::endl;
+   }
+   ~Derived()
+   {
+       std::cout<<"Derived destructor"<<std::endl;
+   }
+};
+
+int main()
+{
+    Base *obj1 = new Derived;
+
+    obj1->display();
+    delete obj1;
+    system("pause");
+    return 0;
+}
 ```
 
 **Output:-**
+
+ _Base constructor  
+  Derived constructor  
+  Derived class  
+  Base destructor_
+
+From the above example its clear that if there is some resource allocation in Derived constructor then that will not get freed as derived's destructor is not get called. To call the derived's destructor destructor of base class should be virtual.
+
+    virtual ~Derived();
+
+**Output:-**
+
+_Base constructor  
+ Derived constructor  
+ Derived class  
+ Derived destructor  
+ Base destructor_
 
 We can declare destructors as pure virtual if we don't want to make any other method of class as pure virtual but still want to make the class as abstract.
 
