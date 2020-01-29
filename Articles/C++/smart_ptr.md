@@ -66,14 +66,111 @@ But in first method we can do that. Take `usingSmartPtr *sp = new usingSmartPtr;
     UsingSmartPtr *ptr = new UsingSmartPtr();
     std::unique_ptr<UsingSmartPtr> usp(ptr);
 
-----
-**custom deleter for a shared pointer**
+There is one more disadvantage that we can't use a custom `deleter` with the `make_shared`. continue to read for more detail
 
-why shared pointer don't need virtual destructor
-why cost and non const and value pass smart pointer
+----
+**Deleter**
+
+Let's take an example:-
+```cpp
+int main(){
+    ...
+    std::vector<std::shared_ptr<void>> vsptr;
+    {
+        vsptr.push_back(std::shared_ptr<UsingSmartPtr>(new UsingSmartPtr));
+    }
+    ...
+}
+```
+This code compiles fine.
+
+Here I have created a vector of shared pointers of void type. After that I added a shared pointer of type `UsingSmartPtr`. How could this code compile fine? Isn't there a type mismatch?
+
+The trick is that `std::shared_ptr` performs type erasure. Basically, when a new `shared_ptr` is created it will store internally a `deleter` function (which can be given as argument to the constructor but if not present defaults to calling delete). When the `shared_ptr` is destroyed, it calls that stored function and that will call the `deleter`.
+
+Due to this reason shared pointer don't need virtual destructor in base class and both the derived and UsingSmartPtr destructors get called in below code.
+```cpp
+class UsingSmartPtr{
+
+    public:
+    UsingSmartPtr()
+    {
+        std::cout<<"smart pointer constructor"<<std::endl;
+    }
+    ~UsingSmartPtr()
+    {
+        std::cout<<"smart pointer destructor"<<std::endl;
+    }
+};
+class derived: public UsingSmartPtr{
+
+    public:
+    derived()
+    {
+        std::cout<<"derived constructor"<<std::endl;
+    }
+    ~derived()
+    {
+        std::cout<<"derived destructor"<<std::endl;
+    }
+};
+
+int main(){
+    std::shared_ptr<UsingSmartPtr> sptr(new derived());
+}
+```
+
+**Output:-**
+
+  _smart pointer constructor  
+  derived constructor  
+  derived destructor  
+  smart pointer destructor_
+
+Here `deleter` is set to derived and it called derived destructor on deletion. Which further called the base destructor.
+
+**Custom deleter**
+
+We can create our own deleter function.
+
+A simple sketch of the type erasure that is going on simplified with `std::function`, and avoiding all reference counting and other issues can be seen here:
+```cpp
+template <typename T>
+void delete_deleter( void * p ) {
+   delete static_cast<T*>(p);
+}
+
+template <typename T>
+class my_unique_ptr {
+  std::function< void (void*) > deleter;
+  T * p;
+  template <typename U>
+  my_unique_ptr( U * p, std::function< void(void*) > deleter = &delete_deleter<U> )
+     : p(p), deleter(deleter)
+  {}
+  ~my_unique_ptr() {
+     deleter( p );   
+  }
+};
+
+int main() {
+   my_unique_ptr<void> p( new double ); // deleter == &delete_deleter<double>
+}
+// ~my_unique_ptr calls delete_deleter<double>(p)
+```
+When a `shared_ptr` is copied (or default constructed) from another the `deleter` is passed around, so that when you construct a `shared_ptr<T>` from a `shared_ptr<U>` the information on what destructor to call is also passed around in the `deleter`.
+
+
+why const and non const and value pass smart pointer
 
 #### References
+[Cppreference](https://en.cppreference.com/w/cpp/memory/shared_ptr)
+
 [StackOverflow](https://stackoverflow.com/questions/20895648/difference-in-make-shared-and-normal-shared-ptr-in-c?rq=1)
+
+[StackOverflow](https://stackoverflow.com/questions/5913396/why-do-stdshared-ptrvoid-work)
+
+[Bartek's](https://www.bfilipek.com/2016/04/custom-deleters-for-c-smart-pointers.html)
 
 ### Authors
 
