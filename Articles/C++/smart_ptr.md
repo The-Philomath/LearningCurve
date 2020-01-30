@@ -27,12 +27,13 @@ In the first syntax two separate memory allocation happens. One by `new` operato
 
 In the second syntax memory allocation happens only 1 time and that is for both the object and smart pointer's control block.
 
+
 ----
 **Exception-Safety**
 
-***NOTE**: This is not a problem since **C++17**, due to the changes in the evaluation order of function arguments. Specifically, each argument to a function is required to fully execute before evaluation of other arguments.
+**NOTE**: This is not a problem since **C++17**, due to the changes in the evaluation order of function arguments. Specifically, each argument to a function is required to fully execute before evaluation of other arguments.
 
-Consider this example,
+Consider this example:-
 ```cpp
 void F(const std::shared_ptr<Lhs> &lhs, const std::shared_ptr<Rhs> &rhs) { /* ... */ }
 
@@ -88,7 +89,7 @@ Here I have created a vector of shared pointers of void type. After that I added
 
 The trick is that `std::shared_ptr` performs type erasure. Basically, when a new `shared_ptr` is created it will store internally a `deleter` function (which can be given as argument to the constructor but if not present defaults to calling delete). When the `shared_ptr` is destroyed, it calls that stored function and that will call the `deleter`.
 
-Due to this reason shared pointer don't need virtual destructor in base class and both the derived and UsingSmartPtr destructors get called in below code.
+Due to this reason shared pointer don't need virtual destructor in base class and both the derived and UsingSmartPtr destructors get called in below code. But for the `unique_ptr` we do need the virtual destructors. Becuase call of deleter is not same in the internal implementation of `unique_ptr` and `shared_ptr`.
 ```cpp
 class UsingSmartPtr{
 
@@ -131,7 +132,9 @@ Here `deleter` is set to derived and it called derived destructor on deletion. W
 
 **Custom deleter**
 
-We can create our own deleter function.
+We can create our own `deleter` function. All custom `deleter` accept a raw pointer(as an argument) to the object to be destroyed.
+
+`deleters` that are function pointers grow the size of a unique_ptr from one word to two words. For functors size grows depending on how much states we are going to store inside functors.  
 
 A simple sketch of the type erasure that is going on simplified with `std::function`, and avoiding all reference counting and other issues can be seen here:
 ```cpp
@@ -191,7 +194,7 @@ int main(){
 }
 ```
 
-Compiler deletes copy constructor of a `unique_ptr`. So passing of a `unique_ptr` to a function won't work.
+`unique_ptr` is move only. We can't copy it. Compiler deletes copy constructor of a `unique_ptr`. So passing of a `unique_ptr` to a function won't work.
 ```cpp
 void func(std::unique_ptr<UsingSmartPtr> uptr)
 {
@@ -215,6 +218,7 @@ To make it work we have to pass the ownership of `unique_ptr` to the function.
 ```
 
 That is also the reason why `auto_ptr` are deprecated now.
+Also copying an `auto_ptr` sets it to NULL. Also its not possible to store `auto_ptr` in a container.
 
 **How to use arrays with unique_ptr?**
 
@@ -240,6 +244,47 @@ We need to use custom `deleter` (here as a lambda expression). Additionally we c
 
 Remember shared pointer is not a pointer which is shared but its pointer to the shared. Here pointee is shared.
 
+Sometimes a function want's to reseat a Widget. In this use-case, you should pass the `std::unique_ptr<Widget>` by a non-const reference.
+
+```cpp
+#include <memory>
+#include <utility>
+
+struct Widget{
+    Widget(int){}
+};
+
+void reseat(std::unique_ptr<Widget>& uniqPtr){
+    uniqPtr.reset(new Widget(2003));   // (0)
+    // do something with uniqPtr
+}
+
+int main(){
+    auto uniqPtr = std::make_unique<Widget>(1998);
+
+    reseat(std::move(uniqPtr));       // (1) ERROR
+    reseat(uniqPtr);                  // (2)
+}
+```
+
+Now, the call (1) fails because you can not bind an rvalue to a non-const lvalue reference. This will not hold for the copy in (2). A lvalue can be bound to an lvalue reference. By the way. The call (0) will not only construct a new Widget(2003), it will also destruct the old Widget(1998).
+
+Here are the three function signatures, we have to deal with.
+```cpp
+void share(std::shared_ptr<Widget> shaWid);
+void reseat(std::shard_ptr<Widget>& shadWid);
+void mayShare(const std::shared_ptr<Widget>& shaWid);
+```
+Let's look at each function signature in isolation. What does this mean from the function perspective?
+
+`void share(std::shared_ptr<Widget> shaWid)`: I'm for the lifetime of the function body a shared owner of the `Widget`. At the begin of the function body, I will increase the reference counter; at the end of the function, I will decrease the reference counter; therefore, the `Widget` will stay alive, as long as I use it.
+
+`void reseat(std::shared_ptr<Widget>& shaWid)`: I'm not a shared owner of the `Widget`, because I will not change the reference counter. I have not guaranteed that the `Widget` will stay alive during the execution of my function, but I can reseat the resource. A non-const lvalue reference is more like: I borrow the resource and can reseat it.
+
+`void mayShare(const std::shared_ptr<Widget>& shaWid)`: I only borrow the resource. Either can I extend the lifetime of the resource nor can I reseat the resource. To be honest, you should use a pointer `(Widget*)` or a reference `(Widget&)` as a parameter instead, because there is no added value in using a `std::shared_ptr`.
+
+In One line:- There is no reason to pass by value, unless the goal is to share ownership of an object.
+
 #### References
 [Cppreference](https://en.cppreference.com/w/cpp/memory/shared_ptr)
 
@@ -248,6 +293,8 @@ Remember shared pointer is not a pointer which is shared but its pointer to the 
 [StackOverflow](https://stackoverflow.com/questions/5913396/why-do-stdshared-ptrvoid-work)
 
 [Bartek's](https://www.bfilipek.com/2016/04/custom-deleters-for-c-smart-pointers.html)
+
+[modernes](https://www.modernescpp.com/index.php/c-core-guidelines-passing-smart-pointer)
 
 ### Authors
 
