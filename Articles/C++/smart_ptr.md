@@ -160,8 +160,85 @@ int main() {
 ```
 When a `shared_ptr` is copied (or default constructed) from another the `deleter` is passed around, so that when you construct a `shared_ptr<T>` from a `shared_ptr<U>` the information on what destructor to call is also passed around in the `deleter`.
 
+For our previous example a custom deleter looks like:-
+```cpp
+void customDeleter(derived *ptr)
+{
+    delete ptr;
+}
 
-why const and non const and value pass smart pointer
+int main(){
+    std::shared_ptr<UsingSmartPtr> sptr(new derived(), customDeleter);
+}
+
+// with functor
+struct customDeleter
+{
+    void operator ()(derived *ptr){
+        delete ptr;
+    }
+};
+
+int main(){
+    std::shared_ptr<UsingSmartPtr> sptr(new derived(), customDeleter());
+}
+
+// lambda expression
+int main(){
+    std::shared_ptr<UsingSmartPtr> sptr(new derived(), [](derived *ptr){
+        delete ptr;
+    });
+}
+```
+
+Compiler deletes copy constructor of a `unique_ptr`. So passing of a `unique_ptr` to a function won't work.
+```cpp
+void func(std::unique_ptr<UsingSmartPtr> uptr)
+{
+    uptr->func();
+}
+
+int main(){
+    std::unique_ptr<UsingSmartPtr> uptr(new UsingSmartPtr);
+    func(uptr);
+}
+```
+
+**Output:-**
+
+  _error: use of deleted function 'std::unique_ptr<_Tp, _Dp>::unique_ptr(const std::unique_ptr<_Tp, _Dp>&) [with _Tp = UsingSmartPtr; _Dp = std::default_delete<UsingSmartPtr>]'  
+  func(uptr);_
+
+To make it work we have to pass the ownership of `unique_ptr` to the function.
+```cpp
+    func(std::move(uptr));
+```
+
+That is also the reason why `auto_ptr` are deprecated now.
+
+**How to use arrays with unique_ptr?**
+
+First thing to know:
+
+    std::unique_ptr<Test> p(new Test[10]);  // will not work!
+
+The above code will compile, but when resources are about to be deleted only single delete will be called. So how do we ensure that delete[] is called?
+
+Fortunately unique pointers have a proper partial specialization for arrays and we can write:
+
+    std::unique_ptr<Test[]> tests(new Test[10]);
+
+**How to use arrays with shared_ptr?**
+
+Arrays with `shared_ptr` are a bit trickier that when using `unique_ptr`, but we can use our own `deleter` and have full control over them as well:
+
+    std::shared_ptr<Test> sp(new Test[2], [](Test *p) { delete []p;});
+
+We need to use custom `deleter` (here as a lambda expression). Additionally we cannot use `make_shared` construction.
+
+**Passing a smart pointer to a function**
+
+Remember shared pointer is not a pointer which is shared but its pointer to the shared. Here pointee is shared.
 
 #### References
 [Cppreference](https://en.cppreference.com/w/cpp/memory/shared_ptr)
