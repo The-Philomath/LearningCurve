@@ -43,13 +43,58 @@ int main(){
 ```
 By default overloded `operator()` by compiler is `const` and it returns a `constexpr` if it can and it do the `auto` type deduction.
 
-if we want to alter the local variable `val` then we have to use `mutable` keyword. which will simply removes the `const`
+if we want to alter the local variable `val` and pass it by value then we have to use `mutable` keyword. which will simply removes the `const`
+
+or we can pass by reference in the capture list.
 
 ```cpp
 auto l = [val](auto i) mutable {
     return i + ++val;
 };
 ```
+
+Since **C++14** we can put expressions in capture list.
+
+Fibonacci series using lambda. Each time calling of this function will return next number of series.
+```cpp
+auto l = [i = 0, j = 1]() mutable{   // A statefull lambda. carrying its own states
+        i = std::exchange(j, j+i);
+        return i;
+    };
+```
+
+similarly we can put a `unique_ptr` in capture list and then lambda will become non copy able.
+```cpp
+auto l = [i = 0, p = std::make_unique<int>(2)]() mutable{   // A statefull lambda. carrying its own states
+        return ++i;
+    };
+
+//auto l2 = l; //gives error
+```
+
+Interacting statefull Lambda
+```cpp
+auto l = [i = 0, j = 1]() mutable{
+        struct Results{
+           int &a;
+           int &b;
+
+           Results(int& i, int& j):a(i),b(j){}
+           operator int(){
+               return a;
+           }
+           Results next()
+           {
+               a = std::exchange(b, b+a);
+               return *this;
+           }
+        };
+
+        return Results(i,j).next();
+    };
+```
+l().b = 10;
+
 
 #### References
 [C++ Weakly](https://www.youtube.com/channel/UCxHAlbZQNFU2LgEtiqd2Maw)
