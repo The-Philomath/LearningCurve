@@ -72,7 +72,9 @@ auto l = [i = 0, p = std::make_unique<int>(2)]() mutable{   // A statefull lambd
 //auto l2 = l; //gives error
 ```
 
-Interacting statefull Lambda
+**Interacting with statefull Lambda**
+
+We can use the states of a lambda outside the lambda.
 ```cpp
 auto l = [i = 0, j = 1]() mutable{
         struct Results{
@@ -92,9 +94,78 @@ auto l = [i = 0, j = 1]() mutable{
 
         return Results(i,j).next();
     };
-```
-l().b = 10;
 
+// we can call lambda and access the member variable of local class
+  l().b = 10;  // setting member variable to 10
+```
+
+**Inheriting lambda**
+
+Just like any other class we can inherit lambdas
+
+```cpp
+template<typename t1, typename t2>
+struct combine: t1,t2
+{
+    combine(t1 l1,t2 l2):t1(std::move(l1)),t2(std::move(l2)){}
+    using t1::operator();
+    using t2::operator();
+};
+
+int main(){
+    auto l1 = [](){ return 1;};
+    auto l2 = [](int a){return 1+a;};
+    combine c = combine(l1,l2);
+    cout<<c(4);
+
+    return 0;
+}
+```
+
+**Lambda to function pointer conversion**
+
+For conversion it must be a non capturing lambda because capturing lambdas have states.
+
+```cpp
+std::vector<std::function<int (int,int)>> vfunc;
+
+vfunc.emplace_back([](int i, int j){return i+j;});
+vfunc.emplace_back([](int i, int j){return i*j;});
+
+//we can also define our vector like:-
+std::vector<int ( * ) (int, int)> vfunv;
+```
+another example. `set` with unique member variables.
+```cpp
+struct coordinates
+{
+    int x;
+    int y;
+};
+
+int main(){
+
+    using fptr = bool (*)(const coordinates &,const coordinates &);
+    std::set<coordinates, fptr> s{[](const coordinates &first, const coordinates &second){
+        return ((first.x != second.x) && (first.y != second.y));
+        }};
+
+    s.insert(coordinates{3,4});
+    s.insert(coordinates{3,4});
+    std::cout<<s.size();
+    for(auto i: s)
+    {
+        std::cout<<i.x<<" "<<i.y;
+    }
+
+    return 0;
+}
+```
+`std::function` can be used where we uses function pointers. But `std::funciton` is more than a function pointer. we can store any callable object:
+* functions
+* lambda expressions
+* bind expressions (internally implemented as functors)
+* functors
 
 #### References
 [C++ Weakly](https://www.youtube.com/channel/UCxHAlbZQNFU2LgEtiqd2Maw)
