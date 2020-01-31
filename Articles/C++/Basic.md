@@ -12,6 +12,7 @@ Few basic of C++
 * `ADL`-> Argument dependent lookup or Koenig lookup, is the set of rules for looking up the unqualified function names in function-call expressions, including implicit function calls to overloaded operators. These function names are looked up in the namespaces of their arguments in addition to the scopes and namespaces considered by the usual unqualified name lookup.
 * Implement rule of 5 only when we have ownership semantics means we have to define a destructor to release some resources.
 * return non local variables by reference.
+* Name Hiding is the concept in C++ which hides the base class function in derived class if the name of function is same in both the classes even though parameters are different. It will not be an overloading.
 * Always overload subscript operator in const and non const both to modify and not to modify the object.
 * In C++11 Destructors are noexcept means they dont throw. If you throw from a destructor it will crash the program.
 * In C++98 it will crash only if destructor is called due to stack unwinding as a result of an exception throw.
