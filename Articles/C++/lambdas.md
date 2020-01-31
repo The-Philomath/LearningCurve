@@ -71,7 +71,7 @@ auto l = [i = 0, p = std::make_unique<int>(2)]() mutable{   // A statefull lambd
 
 //auto l2 = l; //gives error
 ```
-
+----
 **Interacting with statefull Lambda**
 
 We can use the states of a lambda outside the lambda.
@@ -98,10 +98,10 @@ auto l = [i = 0, j = 1]() mutable{
 // we can call lambda and access the member variable of local class
   l().b = 10;  // setting member variable to 10
 ```
-
+----
 **Inheriting lambda**
 
-Just like any other class we can inherit lambdas
+Just like any other class we can inherit lambdas. One of the use of it is as it provides the access to the call operator.
 
 ```cpp
 template<typename t1, typename t2>
@@ -121,10 +121,12 @@ int main(){
     return 0;
 }
 ```
-
+----
 **Lambda to function pointer conversion**
 
 For conversion it must be a non capturing lambda because capturing lambdas have states.
+
+It is quite useful for passing lambdas to a **C** API.
 
 ```cpp
 std::vector<std::function<int (int,int)>> vfunc;
@@ -161,6 +163,92 @@ int main(){
     return 0;
 }
 ```
+----
+**memory management using lambda**
+
+lambdas can be used with smart_ptr as a custom deleter
+```cpp
+int main(){
+    auto deleter = [](FILE* f){
+        fclose(f);
+    };
+
+    auto file = std::unique_ptr<FILE, decltype(deleter)> (fopen("file.txt","w"), deleter);    
+}
+```
+----
+**Higher Order functions**
+
+Functions which returns another functions are known as higher order functions.
+```cpp
+template<typename f1, typename f2>
+auto f1f2(f1 &&func1, f2 &&func2)
+{
+    return [func1 = std::forward<f1>(func1), func2 = std::forward<f2>(func2)](){
+        return func1(func2());
+    };
+}
+
+int bigFunc(int);
+int biggerFunc();
+
+int main(const int argc, const char *[]){
+    auto ret = f1f2(bigFunc,biggerFunc);
+    if(argc > 2)
+    {
+        return ret();
+    }
+}
+```
+----
+**C++17 variadic using**
+```cpp
+
+template<typename ... B>
+struct combine : B...
+{
+    template<typename ... T>
+    combine(T && ... t) : B(std::forward<T>(t))...
+    {
+    }
+
+    using B::operator()...;
+};
+
+//typ deduction guide
+template<typename ... T>
+combine(T...) -> combine<std::decay_t<T>...>;
+
+int main(){
+    const auto l1 = [](){ return 1;};
+    const auto l2 = [](int a){return 1+a;};
+    combine c(l1,l2, [](const double d){return d;});
+    std::cout<<c(4);
+
+    return 0;
+}
+```
+same can be written using aggregate initialization using **C++17**. where we can also initilize base classes using initializer list
+```cpp
+template<typename ... B>
+struct combine : B ...
+{
+   using B::operator()...;
+};
+
+//typ deduction guide
+template<typename ... T>
+combine(T...) -> combine<T...>;
+
+int main(){
+    const auto l1 = [](){ return 1;};
+    const auto l2 = [](int a){return 1+a;};
+    combine c{l1,l2, [](const double d){return d;}};  // aggregate initialization
+    std::cout<<c(4);
+
+    return 0;
+}
+```
 `std::function` can be used where we uses function pointers. But `std::funciton` is more than a function pointer. we can store any callable object:
 * functions
 * lambda expressions
@@ -171,3 +259,5 @@ int main(){
 [C++ Weakly](https://www.youtube.com/channel/UCxHAlbZQNFU2LgEtiqd2Maw)
 
 ### Authors
+
+* **The Philomath**
