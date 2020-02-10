@@ -16,7 +16,7 @@ Few basic of C++
 * Always overload subscript operator in const and non const both to modify and not to modify the object.
 * In C++11 Destructors are noexcept means they dont throw. If you throw from a destructor it will crash the program.
 * In C++98 it will crash only if destructor is called due to stack unwinding as a result of an exception throw.
-* __declspec(nothrow)_ is visual studio specific version of nothrow
+* __ declspec(nothrow)_ is visual studio specific version of nothrow
 * void fun()throw(){} is execption specification and it is deprecated in modern C++
 * Compiler creates jump tables for the exception handling so that during stack unwinding if the block do not capture the exception control can directly jump to block end.
 * In Case of _noexcept_, no jump table is created.
@@ -47,3 +47,7 @@ injected-class-name  -> StoryTeller - Unslander Monica
 * _std::insert_iterator_ is a LegacyOutputIterator that inserts elements into a container for which it was constructed, at the position pointed to by the supplied iterator. The container's insert() member function is called whenever the iterator (whether dereferenced or not) is assigned to. Incrementing the _std::insert_iterator_ is a no-op
 _std::set<int>_ target;
 * _std::copy(source.begin(), source.end(), inserter<std::set<int>>(target, target.begin()))_ // iterator adaptors
+* `emplace vs insert fns like push_back`-> insertion functions take objects to be inserted while emplace functions take constructor argument for the object to be inserted. Due to which insert functions creates a temporary object and copy that(move construct) to target container. But emplace don't create temporaries.
+* We can rely on vector, dequeue and strings for construction and no to do the assignment instead. Prefer to use emplace to these containers.
+* Don't use emplace for the containers which can store duplicates and we are going to store the duplicates in future. Because for such containers emplace also creates the temporaries to find the duplicates and it creates it more often than inserts.
+* don't use emplace functions if you are adding the resource managing objects(smart pointers) to a container it may lead to memory leak on exception during `new` call.
