@@ -249,6 +249,24 @@ int main(){
     return 0;
 }
 ```
+
+**Lambdas within fold expressions**
+
+We can use lambdas within fold expression. A fold expression is an expression within paranthesis i.e. ()
+```cpp
+template<typename ... T>
+auto func(T ... var)
+{
+    return ([var](){return var + 1;}() + ...); // creating lambda and calling it inside the fold expression
+}
+
+int main()
+{
+    std::cout<<func(1,2,3,4,5);
+    return 0;
+}
+```
+
 `std::function` can be used where we uses function pointers. But `std::funciton` is more than a function pointer. we can store any callable object:
 * functions
 * lambda expressions
