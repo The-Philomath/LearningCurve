@@ -2,7 +2,7 @@
 A constructor which can be called without any parameter is a default constructor.
 It could have the parameters with default values or could be empty.
 
-If no user-defined constructor exists for a class A and one is needed, the compiler implicitly declares a default parameterless constructor A::A(). This constructor is an inline public member of its class. The compiler will implicitly define A::A() when the compiler uses this constructor to create an object of type A. The constructor will have no constructor initializer and a null body.
+If no user-defined constructor exists for a class A and one is needed, the compiler implicitly declares a default parameterless constructor A::A(). This constructor is an **inline** public member of its class. The compiler will implicitly define A::A() when the compiler uses this constructor to create an object of type A. The constructor will have no constructor initializer and a null body.
 
 * No default constructor is created for a class that has any constant or reference type members.
 

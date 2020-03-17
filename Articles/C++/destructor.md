@@ -3,6 +3,8 @@ Destructor are used to destroy the object. They are called automatically when ob
 
 Destructors can't be overloaded. As we can't provide any parameter to destructor. Because it doesn't make sense. Most of the times destructor get called automatically.
 
+By default destructors are always **inline** and **noexcept**.
+
 **Section §12.4 of C++0x draft n3290** has this to say about destructors:
 
 **Destructors**
@@ -87,6 +89,8 @@ We can declare destructors as pure virtual if we don't want to make any other me
 Note that if we declare any other method as pure virtual then derived class must have to override that otherwise that will also be abstract. But if declare destructor as pure virtual then only base class will be abstract.
 
 >The destructor is the only method that even if it is pure virtual has to have an **implementation** in order to instantiate derived classes.
+
+Destructor of derived class will always be virtual if base class has a virtual destructor.
 
 ### Authors
 
