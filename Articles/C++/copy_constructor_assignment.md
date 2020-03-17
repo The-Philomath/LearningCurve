@@ -56,6 +56,8 @@ class Base
 
 But if we declare the copy constructor. Compiler will provide the default copy assignment operator.
 
+Since C++11 if we are defining any of copy constructor or copy assignment operator or destructor and not defining other two then compiler can warn you and its a deprecated behavior. It means it can be removed all together somewhere in future. So we should always follow rule of 3/5 even if we do not want to define any of 5 function we should declare them with a **default** keyword. Either define all 5 or define none.
+
 **Output:-**
 
 ### Authors
