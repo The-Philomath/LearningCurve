@@ -3,7 +3,7 @@ Destructor are used to destroy the object. They are called automatically when ob
 
 Destructors can't be overloaded. As we can't provide any parameter to destructor. Because it doesn't make sense. Most of the times destructor get called automatically.
 
-By default destructors are always **inline** and **noexcept**.
+By default destructors are always **inline** and **noexcept**. Not only destructors all those functions which helps in releasing memory are noexcept (delete, delete[]) until unless it is explicitly declared as it(or its Base classes) will raise an exception.
 
 **Section §12.4 of C++0x draft n3290** has this to say about destructors:
 
