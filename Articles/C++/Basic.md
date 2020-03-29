@@ -51,3 +51,7 @@ _std::set<int>_ target;
 * We can rely on vector, dequeue and strings for construction and no to do the assignment instead. Prefer to use emplace to these containers.
 * Don't use emplace for the containers which can store duplicates and we are going to store the duplicates in future. Because for such containers emplace also creates the temporaries to find the duplicates and it creates it more often than inserts.
 * don't use emplace functions if you are adding the resource managing objects(smart pointers) to a container it may lead to memory leak on exception during `new` call.
+* `Braced initialization` prevent narrowing conversion i.e. _int b{2.0};_ will throw an error whereas _int b(2.0);_ will not throw.
+* `Braced initialization` is immune to `c++ most vexing parse`(anything that can be parsed as a declaration must be interpreted as one) i.e. _Widget w();_ its a function declaration. What if the client want to create an object _w_ by calling default constructor. It is possible with only braced initialization i.e. _widget w{};_ will call the default constructor.
+* An example where the choice between parentheses and braces can make a significant difference is creating a _std::vector< numeric type >_ with two arguments.
+* Call using braced initialization strongly prefer the constructor overloads taking std::intializer_lists even if an exact matching constructor is available. If compiler can convert the argument to initializer list params it will prefer the initializer list.
