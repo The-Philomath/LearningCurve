@@ -123,6 +123,37 @@ widget& widget::operator=(const widget &rhs)
 
 we can use the `shared_ptr` instead of `unique_ptr`. Then there will be no problem during destruction as deleter is not part of `shared_ptr` type. But `unique_ptr` is more accurate choice as widget class has an exclusive ownership of pimpl.
 
+If we want to use the data members of impl class in a function and don't want to make impl friend of widget then we expose a function to client but actual definition of that will be in impl class.
+
+```Cpp
+//Widget.h
+class widget
+{
+public:
+  ...
+  void drawWidget();
+private:
+  class impl;
+  std::unique_ptr<impl> pimpl;
+};
+//Widget.cpp
+class impl
+{
+  ...
+private:
+  void drawWidget();
+};
+...
+void widget::drawWidget()
+{
+  pimpl->drawWidget();
+}
+void impl::drawWidget()
+{
+  std::cout<<name;
+}
+```
+
 #### References
 [Stack Overflow](https://stackoverflow.com/questions/8972588/is-the-pimpl-idiom-really-used-in-practice)
 
