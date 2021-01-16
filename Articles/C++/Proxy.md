@@ -49,7 +49,7 @@ public:
     return proxy(_bits[index]);
   }
 };
-```
+
 
 int main()
 {
@@ -65,6 +65,7 @@ int main()
   }
   return 0;
 }
+```
 
 The _proxy_ class now does our checking for a binary digit and we make the _bitArray_'s `operator[]` return an instance of the proxy which has limited access to the _bitArray_'s internals.
 
@@ -73,7 +74,7 @@ then the auto type deduction will not deduce the return type as bool in this cas
 ```cpp
 auto val = fn()[3]; //calling fn which will return a bool vector. accessing 4th element of vector.
 ```
-type of _val_ is not necessarily be `bool`. as the proxy class will return a std::vector<bool>::reference object.
+type of _val_ is not necessarily be `bool`. as the proxy class will return a `std::vector<bool>::reference` object.
 
 If we want to use the auto then solution is to use the _explicit typed initializer idiom_. i.e.
 ```cpp
