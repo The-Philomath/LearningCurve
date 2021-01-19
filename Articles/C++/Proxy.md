@@ -82,6 +82,8 @@ auto val = static_cast<bool>(fn()[3]);
 ```
 Now type of _val_ is `bool`.
 
+A conversion does not happen when using `auto` because that's exactly what `auto` is for: use whatever the actual type of the expression is, to initialize/construct the object, and don't do any conversions
+
 #### References
 [stackoverflow](https://stackoverflow.com/questions/994488/what-is-proxy-class-in-c)
 

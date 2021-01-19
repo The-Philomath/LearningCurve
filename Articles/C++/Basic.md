@@ -81,3 +81,4 @@ vector<bool> vb(20,true);
 auto b = vb[10]; //type of auto not necessarily be bool. From cppinsight its std::_bitreference
 bool *pb = &b; //error, cannot convert 'std::_Bit_reference*' to 'bool*' in initialization
 ```
+* Perfect forwarding allows you to preserve an argument’s value category (lvalue/rvalue) and const/volatile modifiers.
