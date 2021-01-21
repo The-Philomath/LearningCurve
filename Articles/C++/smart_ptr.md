@@ -285,12 +285,59 @@ Let's look at each function signature in isolation. What does this mean from the
 
 In One line:- There is no reason to pass by value, unless the goal is to share ownership of an object.
 
+----
+**How to define copy constructor for a class having unique_ptr?**
+
+The usual case to define `unique_ptr` in a class is so that `unique_ptr` is able to use inheritance.
+First of all we have to do the deep copy of the contained pointer to ensure the derived class is copied correctly.
+
+```cpp
+struct Base
+{
+    //some stuff
+
+    auto clone() const { return std::unique_ptr<Base>(clone_impl()); }
+protected:
+    virtual Base* clone_impl() const = 0;
+};
+
+struct Derived : public Base
+{
+    //some stuff
+
+protected:
+    virtual Derived* clone_impl() const override { return new Derived(*this); };                                                 
+};
+
+struct Foo
+{
+    std::unique_ptr<Base> ptr;  //points to Derived or some other derived class
+
+    //rule of five
+    ~Foo() = default;
+    Foo(Foo const& other) : ptr(other.ptr->clone()) {}
+    Foo(Foo && other) = default;
+    Foo& operator=(Foo const& other) { ptr = other.ptr->clone(); return *this; }
+    Foo& operator=(Foo && other) = default;
+};
+```
+Two things are happening here:
+* The first is the addition of copy and move constructors, which are implicitly deleted in Foo as the copy constructor of `unique_ptr` is deleted. The move constructor can be added simply by `= default`. which is just to let the compiler know that the usual move constructor shall not be deleted (this works, as `unique_ptr` already has a move constructor which can be used in this case).
+
+For the copy constructor of `Foo`, there is no similar mechanism as there is no copy constructor of `unique_ptr`. So, one has to construct a new `unique_ptr`, fill it with a copy of the original pointee, and use it as member of the copied class.
+
+* In case inheritance is involved, the copy of the original pointee must be done carefully. The reason is that doing a simple copy via `std::unique_ptr<Base>(*ptr)` in the code above would result in slicing, i.e., only the base component of the object gets copied, while the derived part is missing.
+
+To avoid this, the copy has to be done via the clone-pattern. The idea is to do the copy through a virtual function `clone_impl()` which returns a `Base*` in the base class. In the derived class, however, it is extended via covariance to return a `Derived*`, and this pointer points to a newly created copy of the derived class. The base class can then access this new object via the base class pointer `Base*`, wrap it into a `unique_ptr`, and return it via the actual `clone()` function which is called from the outside.
+
 #### References
 [Cppreference](https://en.cppreference.com/w/cpp/memory/shared_ptr)
 
 [StackOverflow](https://stackoverflow.com/questions/20895648/difference-in-make-shared-and-normal-shared-ptr-in-c?rq=1)
 
 [StackOverflow](https://stackoverflow.com/questions/5913396/why-do-stdshared-ptrvoid-work)
+
+[StackOverflow](https://stackoverflow.com/questions/16030081/copy-constructor-for-a-class-with-unique-ptr)
 
 [Bartek's](https://www.bfilipek.com/2016/04/custom-deleters-for-c-smart-pointers.html)
 
