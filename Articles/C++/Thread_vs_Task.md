@@ -28,14 +28,6 @@ All of these problems can be managed and solved by `std::async` if it runs with 
 
 * We need to implement threading technology beyond the C++ concurrency API.
 
-https://hackernoon.com/learn-c-multi-threading-in-5-minutes-8b881c92941f
-```cpp
-std::thread t
-```
-```cpp
-auto fut = std::async(processBigData);
-```
-
 ----
 **`std::atomic` vs `volatile`**
 
@@ -94,6 +86,8 @@ y.store(x.load());
 No copy operation. load and store are the function calls.no need to execute function call and assignment in a single instruction.
 
 #### References
+
+https://hackernoon.com/learn-c-multi-threading-in-5-minutes-8b881c92941f
 
 ### Authors
 
