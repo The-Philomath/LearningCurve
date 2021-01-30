@@ -82,3 +82,7 @@ auto b = vb[10]; //type of auto not necessarily be bool. From cppinsight its std
 bool *pb = &b; //error, cannot convert 'std::_Bit_reference*' to 'bool*' in initialization
 ```
 * Perfect forwarding allows you to preserve an argument’s value category (lvalue/rvalue) and const/volatile modifiers.
+* West `const` is the worst `const` east `const` is the best const. East `const` refers to putting `const`, by habit, to the right (east) of the thing you want `const`. West `const` is the habit of putting `const` to the left.
+
+In west const style, `const T` when `T` is `char*` is `char*const`. Surprising. (T is template parameter)
+In east const style, `T const` when `T` is `char*` is `char*const`. Not surprising at all.

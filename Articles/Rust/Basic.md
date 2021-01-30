@@ -39,3 +39,32 @@
 * `let heap_i8_2 = heap_i8.clone();` // clone creates a copy of the memory. Cloning is expensive prefer not to do it.
 * As two variables can't point to same memory so there will be no parallel and concurrency issue in rust.
 * Strings are always on the heap while string slice can either be on heap or on stack. String slice don't own the memory it borrows.
+* **Rust Lifetimes** enforce a piece of memory is still valid for a reference. In rust there can be only 1 owner of the memory but anyone can borrow that with a reference. The one who borrowed the memory must know that the piece of memory it is working on is still valid. TO enforce that rust uses lifetimes.
+
+```
+let a;
+{
+  let b = String::from("Howdy!!");
+  a = b; // transferred Ownership
+  a = &b // borrowed. But there is a compile time error at this line as the scope of b will end next line so the borrowed memory will gone. so a will dangle. Rust don't allow this.
+}
+```
+
+* In beow code `<'a>` is the lifetime which is attached to input and output parameter of function. So we are saying these two are in same scope and have same lifetime. Lifetimes are need to assigned to references only because they can only cause the dangling problems. Even if we don't write explicitly compile will provide lifetimes by itself. Multiple parameters can have different lifetimes.
+
+```
+fn get_inf_ref<'a, 'b: 'a>(param_1: &'a i32, param_2: &'b i8) ->&'a i32{  // 'b will live at least as long as 'a
+param1 //return statement no semicolon
+}
+```
+* To apply the lifetimes there should be reference input as well as outputs in a function.
+* Any reference parameter that never returned as output, the rust compiler provided lifetime is fine.
+* **Static** lifetime means the lifetime that lasts the entire program. **Constants** are static by nature. We can declare static variables. For static lifetimes notation is `'static`. We can pass a static variable to a function parameter accepting `<'a>`lifetime. But reverse is not true.
+* For `structs`
+```
+struct temp<'a, 'b: 'a>{
+  some_data: Vec<i32>,
+  some_reference_data: &'a Vec<i32>,
+  some_other_reference_data: &'b Vec<i32>,
+}
+```
