@@ -83,26 +83,10 @@ int main() {
 }
 ```
 
-So the compiler delayed the instantion of base template or specialization until we acutally calls the `b->display()`.
+So the compiler delayed the instantiation of base template or specialization until we actually calls the `b->display()`.
 Here is what compiler generated code looks like:
 
 ```cpp
-#include <iostream>
-
-template <typename T>
-class Base
-{
-   public:
-        void display()
-        {
-            static_cast<T*>(this)->print();
-        }
-        void print()
-        {
-            std::cout<<"In Base"<<std::endl;
-        }
-};
-
 /* First instantiated from: insights.cpp:17 */
 #ifdef INSIGHTS_USE_TEMPLATE
 template<>
@@ -208,7 +192,7 @@ int main()
 
 **Usages**
 
-Imagine we want to provide only operator `<` for your classes but automatically operator `==` for them!
+Imagine we want to provide only operator `<` for our classes but automatically get operator `==` for them!
 
 ```cpp
 template<class Derived>
@@ -280,12 +264,12 @@ struct Node : std::enable_shared_from_this<Node> // CRTP
 };
 ```
 
-The reason you can't just pass this directly instead of `shared_from_this()` is that it would break the ownership mechanism:
+The reason you can't just pass `this` directly instead of `shared_from_this()` is that it would break the ownership mechanism:
 
 ```cpp
 struct S
 {
-    std::shared_ptr<S> get_shared() const { return std::shared_ptr<S>(this); }
+    std::shared_ptr<S> get_shared() { return std::shared_ptr<S>(this); }
 };
 
 // Both shared_ptr think they're the only owner of S.

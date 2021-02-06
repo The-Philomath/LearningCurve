@@ -57,7 +57,7 @@ _std::set<int>_ target;
 * Call using braced initialization strongly prefer the constructor overloads taking `std::intializer_lists` even if an exact matching constructor is available. If compiler can convert the argument to initializer list params it will prefer the initializer list.
 * Avoid 0 and NULL use _nullptr_. Avoid overloading on integral and pointer types. _nullptr_ is not integral type is of _std::nullptr_t_ type and that is defined as type of _nullptr_. Its a circular definition. _nullptr_ is a pointer of one type, its pointer of all types.
 * If _f(int)_ and _f(void *)_ are present and we call it with 0 or NULL it will always call _f(int)_ but if we call it with _nullptr_ it will call _f(void *)_ .
-* If base class pointer pointing to a function which is not available in base class then it will generate error over there. It's a compilation error. Memory of `Vtable` and `VPTR` gets allocated inside the process address space. Memory of `Vtable` and `VPTR` gets allocated inside the process address space.
+* If base class pointer pointing to a function which is not available in base class then it will generate error over there. It's a compilation error. Memory of `Vtable` and `VPTR` gets allocated inside the process address space.
 * even if a pointer/reference of base class pointing to an object on stack then also the function called with that pointer/reference will need a virtual base class method to resolve the overrided function call.
 * Remember virtual mechanism(runtime polymorphism) of resolving the function depend on the type of memory to which pointer/reference pointing to. Whereas compile time function call resolution depend on the time of pointer itself.
 * Runtime polymorphism do not depend on how the object to which pointer/reference pointing to get the memory. It can be an object on stack or an object on heap.
@@ -86,3 +86,5 @@ bool *pb = &b; //error, cannot convert 'std::_Bit_reference*' to 'bool*' in init
 
 In west const style, `const T` when `T` is `char*` is `char*const`. Surprising. (T is template parameter)
 In east const style, `T const` when `T` is `char*` is `char*const`. Not surprising at all.
+* keywords we can use anywhere but identifies can only be used at certian specific places. We can define a variable with the identifier name.
+identifiers: final, override, import, module
