@@ -1,5 +1,7 @@
 A factory can be implemented in a number of ways. This is how to define it as inner factory.
 
+factory is a component responsible solely for the wholesale(not piecewise) creation of objects. Piece wise creation is builder.
+
 ```cpp
 class Point{
    int x, y;
