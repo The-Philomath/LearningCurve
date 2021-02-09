@@ -118,4 +118,50 @@ _Referential integrity_ applying foreign key across servers is very difficult. w
 _Rebalancing_ if distribute is not even or a DB is facing too much load then we need to rebalance the DBs based upon different criteria.
 
 ----
-##Indexes
+## Indexes
+When DBs expend then to find the records quickly we do the indexing like find all books of chetan bhagat and then arrange in order of name. This will speed up the searching .
+
+But it will decrease the write performance as we need to update the indexes whenever a new record will be added. For a heavy write and low read we should avoid indexing.
+
+----
+## Proxies
+A proxy server is an intermediate server between the client and the back-end server. Proxies are used to filter requests, log requests, or sometimes
+transform requests. Another advantage of a proxy server is that its cache can serve a lot of requests.
+
+**Proxy server types:-**
+
+_Open proxy_ anyone can use to access a server on internet. These can be `Anonymous proxies` which hides the user information. or `Transparent Proxies` which provide the local caching of websites.
+
+_Reverse proxy_ A reverse proxy retrieves resources on behalf of a client from one or more servers. These resources are then returned to the client, appearing as if they originated from the proxy server itself.
+
+----
+## Redundancy and Replication
+Redundancy is having a backup or copy of the original data. Replication means sharing information to ensure consistency between redundant resources, such as software or hardware components, to improve reliability, fault-tolerance, or accessibility. Replication in DBMS is maintained by Master slave architecture. The master gets all the updates, which then ripple through to the slaves.
+
+----
+## SQL vs NoSQL
+Relational DB or non-relational DB
+
+**SQL DB** works on rows and columns. Each row contain information about one entity. e.g. MySQL Oracle, SQLite, MS SQL Server
+
+**NoSQL DB** stores data in various formats. Few are
+* Key-Value Stores: Key is attribute name which is linked to 'value'. e.g. Redis, Dynamo, Voldemort.
+* Document DB: Data stored in Documents. Documents grouped to form collections. e.g. MongoDB, CouchDB.
+* Wide-Column DB: Columns are containers for rows. Unlike SQL DB all rows need not to have all columns and we can add columns easily later on. e.g. Cassandra and HBase.
+* Graph DB: These databases are used to store data whose relations are best represented in a graph. e.g. Neo4j and InfiniteGraph
+
+**Difference in SQL and NoSQL**
+* _Scalability_: SQL is Vertically scaled and NoSQL can be easily scaled horizontally.
+* _Storage_: SQL is row column modal NoSQL have different modals like key-value, document , wide-column and Graph.
+* _Schema_: SQL have fixed Schema for each row. Alteration is expensive. NoSQL Schema is dynamic. each to expand.
+* _Querying_: SQL used sql. No SQL uses different languages. Sometimes its called Unstructured query language(UnQL).
+* _Reliability or ACID Compliancy_: SQL are ACID compliance. NoSQL is not for performance and scalability.
+
+**Which one to use?**
+
+Reasons to choose SQL: We need ACID compliance. Protect the integrity of DB. Our data is structure and unchanging.
+
+Reason to choose NoSQL: For big dynamic data with no specific structure and different types of data use NoSQL. It can be expand on cloud. Which is cost effective. If we don't know before hand how the DB will look like and need to frequently change the DB structure then use NoSQL.
+
+----
+## CAP Theorem
