@@ -165,3 +165,68 @@ Reason to choose NoSQL: For big dynamic data with no specific structure and diff
 
 ----
 ## CAP Theorem
+CAP theorem states that it is impossible for a distributed software system to simultaneously provide more than two out of three of the following guarantees (CAP): Consistency, Availability, and Partition tolerance. Which 2 out of 3 to choose is the design decision we should make.
+
+**Consistency:-** All nodes(users) see the same data at the same time.
+
+**Availability:-** System continue to function even with node failure.
+
+**Partition tolerance:-** System continues to function even if the communication fails between nodes. A system that is partition-tolerant can sustain any amount of network failure that doesn’t result in a failure of the entire network.
+
+e.g.
+C + A => RDMBS
+A + P => BigTable, MongoDB, HBase
+C + P => Cassandra, CouchDB
+
+_Why we can't choose all three?_
+
+To be consistent, all nodes should see the same set of updates in the same order. But if the network suffers a partition, updates in one partition might not make it to the other partitions before a client reads from the out-of-date partition after having read from the up-to-date one. The only thing that can be done to cope with this possibility is to stop serving requests from the out-of-date partition, but then the service is no longer 100% available.
+
+----
+## Consistent Hashing
+
+Normal hashing `index = hash_function(key)` have problem of NON horizontally scalability and that may not be load balanced. To improve caching in those cases we use consistent hashing.
+
+It allows us to distribute data across a cluster in such a way that will minimize reorganization when nodes are added or removed. Hence, the
+caching system will be easier to scale up or scale down.
+
+In Consistent Hashing, when the hash table is resized (e.g. a new cache host is added to the system), only ‘k/n’ keys need to be remapped where ‘k’ is the total number of keys and ‘n’ is the total number of servers. Recall that in a caching system using the ‘mod’ as the hash function, all keys need to be remapped. Load of any host removed or added will be shared among all the available hosts.
+
+**How does it work?**
+As a typical hash function, consistent hashing maps a key to an integer. Suppose the output of the hash function is in the range of [0, 256). Imagine
+that the integers in the range are placed on a ring such that the values are wrapped around.
+Here’s how consistent hashing works:
+1. Given a list of cache servers, hash them to integers in the range.
+2. To map a key to a server,
+* Hash it to a single integer.
+* Move clockwise on the ring until finding the first cache it encounters.
+* That cache is the one that contains the key.
+
+For load balancing, as we discussed in the beginning, the real data is essentially randomly distributed and thus may not be uniform. It may make the keys on caches unbalanced.
+To handle this issue, as well as issue of adding and removing servers, we add “virtual replicas” for caches. Instead of mapping each cache to a single point on the ring, we map it to multiple points on the ring, i.e. replicas. This way, each cache is associated with multiple portions of the ring. If the hash function “mixes well,” as the number of replicas increases, the keys will be more balanced. for better understanding [refer](https://www.youtube.com/watch?v=zaRkONvyGr8).
+
+----
+## Long polling vs WebSockets vs Server Sent Events
+**Ajax Polling** Polling is a standard technique used by the vast majority of AJAX applications.
+1. The client opens a connection and requests data from the server using regular HTTP.
+2. The requested webpage sends requests to the server at regular intervals (e.g., 0.5 seconds).
+3. The server calculates the response and sends it back, just like regular HTTP traffic.
+4. The client repeats the above three steps periodically to get updates from the server.
+
+Client keep on asking for updates in this modal. So a lot of empty response of no update creates HTTP overhead.
+
+**HTTP Long Polling** Server may not respond immediately(if serve don't have any update) to the sent request. It will store the request and send whenever the update will be available. Its also known as `Hanging GET`.
+
+Client will immediately send re-request so that server can respond whenever it has the update.
+1. The client makes an initial request using regular HTTP and then waits for a response.
+2. The server delays its response until an update is available or a timeout has occurred.
+3. When an update is available, the server sends a full response to the client.
+4. The client typically sends a new long-poll request, either immediately upon receiving a response or after a pause to allow an acceptable latency period.
+5. Each Long-Poll request has a timeout. The client has to reconnect periodically after the connection is closed due to timeouts.
+
+**WebSockets** provides full-duplex TCP connection for fast realtime data exchange. Socket is opened after the initial handshake betweek client and server. This is made possible by providing a standardized way for the server to send content to the browser without being asked by the client and allowing for messages to be passed back and forth while keeping the connection open.
+
+**Server-Sent Events(SSE)** client open a persistent long term connection with server for real time updates. If the client wants to send data to the server, it would require the use of another technology/protocol to do so.
+1. Client requests data from a server using regular HTTP.
+2. The requested webpage opens a connection to the server.
+3. The server sends the data to the client whenever there’s new information available.
