@@ -48,7 +48,39 @@ fobj.close()
 Different read operations for a file
 
 - reading the file line by line   ( used for processing )
-- reading using fobj.readlines()
-- reading using fobj.read()
+- reading using `fobj.readlines()`  ( output will be in list )
+- reading using `fobj.read()`       ( output will be in string format)
 - reading using csv library       ( used for processing )
 - reading using pandas library    ( used in data analytics )
+
+Examples to read a file.
+```python
+## reading the file line by line
+# fobj acts as file object or file handler or cursor
+with open("languages.txt") as fobj:
+    for line in fobj:
+        # remove whitespaces if any
+        line = line.strip()
+        output = line.split(":")
+        print(output[0])
+
+
+
+## using readlines()
+with open("languages.txt") as fobj:
+    print(fobj.readlines())
+
+
+## using readlines()
+with open("languages.txt") as fobj:
+    print(fobj.read())
+
+
+import csv
+with open("languages.csv") as fobj:
+    #converting file object to csv object
+    csvreader = csv.reader(fobj,delimiter=':')
+    #print(csv.reader(fobj,delimiter=':'))
+    for line in csvreader:
+        print(line)
+```
