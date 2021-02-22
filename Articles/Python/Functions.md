@@ -40,6 +40,15 @@ set()
 
 ##### User defined functions:-
 
+By default in python everything is in main function.
+```python
+# Always true by default. as everything is in main.
+if __name__ == "__main__":
+    x = class_name()
+    x.class_function("python","Perl")
+```
+
+Here is how to define a user defined function
 ```python
 # define a display function taking two parameters, second one is a variadic parameter
 def display(first,*data):
