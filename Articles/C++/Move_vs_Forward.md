@@ -46,6 +46,7 @@ int main()
 ```
 
 **Output:-**
+
     _X &_
     _const X &_
     _X &&_
@@ -56,6 +57,7 @@ int main()
 Once we have an expression of a value category, we can convert it to an expression of a different value category. If we have a **rvalue** we can assign it to a variable, or take a reference, hence becoming a **lvalue**. If we have a **lvalue** we can return it from a function, so we get a **rvalue**.
 
 But one important rule is that: one can covert from a **lvalue** to a **rvalue** (to an **xvalue** more precisely) by using `static_cast<X &&>` without creating temporaries.
+
 ----
 
 **std::move** possible implementation of `std::move` in library would be
@@ -73,6 +75,7 @@ constexpr typename remove_reference<T>::type && move(T && arg) noexcept
 ```
 
 In conclusion `std::move` does not move, all it does is to return a **rvalue** so that the function that actually moves, eventually receiving a **rvalue reference**, is selected by the compiler
+
 ----
 
 **std::forward**
@@ -122,6 +125,7 @@ int main()
 ```
 
 **Output:-**
+
     _Copy constructor_
     _Move constructor_
 
