@@ -97,7 +97,7 @@ _Horizontal Partitioning_ or(_Range based Partitioning_) divide database based u
 
 _Vertical Partitioning_ or(_Feature based Partitioning_) divide DB based upon features like all house number goes into one DB. all resident names goes into another. Problem which this method is that if the DB size increased further then we may need to partition DBs further.
 
-_Directory based Partitioning_ Its a loosely coupled approach to create a lookup table or service or server which knows current partitioning schema and abstract it away from the DB access code. But here we will introduce a single point failure like directory server.
+_Directory based Partitioning_ Its a loosely coupled approach to create a lookup table or service or server(known as directory server) which knows current partitioning schema and abstract it away from the DB access code. But here we will introduce a single point failure like directory server.
 
 **Partitioning Criteria:-**
 
@@ -146,9 +146,9 @@ Relational DB or non-relational DB
 
 **NoSQL DB** stores data in various formats. Few are
 * Key-Value Stores: Key is attribute name which is linked to 'value'. e.g. Redis, Dynamo, Voldemort.
-* Document DB: Data stored in Documents. Documents grouped to form collections. e.g. MongoDB, CouchDB.
+* Document DB: Data stored in Documents. Documents grouped to form collections. Document DB is represented as jsons. e.g. MongoDB, CouchDB.
 * Wide-Column DB: Columns are containers for rows. Unlike SQL DB all rows need not to have all columns and we can add columns easily later on. e.g. Cassandra and HBase.
-* Graph DB: These databases are used to store data whose relations are best represented in a graph. e.g. Neo4j and InfiniteGraph
+* Graph DB: These databases are used to store data whose relations are best represented in a graph. Websites which are too interconnected use Graph DB like facebook. e.g. Neo4j and InfiniteGraph
 
 **Difference in SQL and NoSQL**
 * _Scalability_: SQL is Vertically scaled and NoSQL can be easily scaled horizontally.
@@ -175,8 +175,8 @@ CAP theorem states that it is impossible for a distributed software system to si
 
 e.g.
 C + A => RDMBS
-A + P => BigTable, MongoDB, HBase
-C + P => Cassandra, CouchDB
+A + P => Cassandra, CouchDB
+C + P => BigTable, MongoDB, HBase
 
 _Why we can't choose all three?_
 
@@ -230,3 +230,11 @@ Client will immediately send re-request so that server can respond whenever it h
 1. Client requests data from a server using regular HTTP.
 2. The requested webpage opens a connection to the server.
 3. The server sends the data to the client whenever there’s new information available.
+
+----
+
+#### In memory Cache vs In memory Database
+
+**Cache** - By definition means it is stored in memory. Any data stored in memory (RAM) for faster access is called cache. Examples: Ehcache, Memcache Typically you put an object in cache with String as Key and access the cache using the Key. It is very straight forward. It depends on the application when to access the cache vs database and no complex processing happens in the Cache. If the cache spans multiple machines, then it is called distributed cache. For example, Netflix uses EVCAche which is built on top of Memcache to store the users movie recommendations that you see on the home screen.
+
+**In Memory Database** - It has all the features of a Cache plus come processing/querying capabilities. Redis falls under this category. Redis supports multiple data structures and you can query the data in the Redis ( examples like get last 10 accessed items, get the most used item etc). It can span multiple machine and is usually very high performant and also support persistence to disk if needed. For example, Twitter uses Redis database to store the timeline information.
