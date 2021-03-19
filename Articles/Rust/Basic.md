@@ -68,3 +68,65 @@ struct temp<'a, 'b: 'a>{
   some_other_reference_data: &'b Vec<i32>,
 }
 ```
+
+Rust has made the memory tradeoff decisions vs other language
+
+Other languages hides the underlying complexity to make the things like strings easier. But rust do not. Rust makes the developer to handle the complexity of strings. Benefits of doing that are runtime speed, concurrency etc. In Rust simple things are harder.
+```
+let example_str: &str = "Howdy"; //string slice
+let example_string: string = String::from("Partner");
+```
+
+Both `String` and `&str` are a grouping of characters(U8's). Difference is how to use and how they stored in memory.
+
+`Strings` are stored in heap and they are mutable.
+
+`&str` is immutable. Often allocated on the stack, sometimes a heap reference, sometimes embedded in the code
+
+We can translate between `String` and `str`
+
+So we generally use `str` for speed and `string` for holding longer
+
+Translating between two:
+```
+let string_from_str: String = example_str.to_string();
+let ..:string = "abcd".to_string();
+```
+
+"abcd" is a string literal having properties of a string slice.
+```
+let string_from_hd = String::from("");
+let string_from_str_var = String::from(example_str);
+
+let str_from_string: &str = &example_string;
+let combine_string_literals = ["",""].concat(); //return string adding 2 string slice
+let combine_with format_macro = format!("{}{}","first","second"); //return strings
+
+let string_plus_str = example_string + example_str; //string should be first and string slice should be second
+
+let mut mut_string = string::new();
+mut_string.push_str(example_str);
+mut_string.push('m');
+
+let combined = a+ &b &mut_string;
+let str_from_substring: &str = &example_str[0..2]; //default is 0 if we not mention works doe both string and slice. not include 2
+[2..=4]; include 4
+
+let char_by_index = &example_str.chars().nth(1);
+
+//match deamon
+match char_by_index{
+   some(c) => println!("found{}",c),
+   None => {}
+}
+if let Some(c) = example.str.chars().nth(2){
+   print...
+}
+```
+
+#### References
+[Doug Milford](https://www.youtube.com/channel/UCmBgC0JN41HjyjAXfkdkp-Q)
+
+### Authors
+
+* **The Philomath**
