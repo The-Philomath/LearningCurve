@@ -87,7 +87,7 @@ Which entry should be removed from cache on a miss.
 5. LFU(Least Frequently Used, count the number of times a page is referred)
 6. Random Replacement
 7. ARC (Adaptive Replacement Cache) :  Introduced in 2003 by IBM (patent) which uses 4 LRU cache to maintain the cache. The intuition is to maintain 1 cache having elements that are accessed only once and the second LRU list having elements that are accessed more than once. For each LRU cache, there is a corresponding ghost cache whose size keeps changing based on some parameter. This cache policy is known to have better performance than the LRU scheme. For more information, kindly read the following paper  : [ARC paper](https://www.usenix.org/conference/fast-03/arc-self-tuning-low-overhead-replacement-cache)
-8. Offline MIN cache : When a new cache policy is introduced, we need a benchmarking policy which we can use to test the performance. In this policy, we know in advance the time at which the item will be requested next in the policy. So the item which will not be needed in the near future will be evicted. 
+8. Offline MIN cache : When a new cache policy is introduced, we need a benchmarking policy which we can use to test the performance. In this policy, we know in advance the time at which the item will be requested next in the policy. So the item which will not be needed in the near future will be evicted.
 
 ----
 ## Sharding or Data Partitioning:-  
@@ -240,3 +240,10 @@ Client will immediately send re-request so that server can respond whenever it h
 **Cache** - By definition means it is stored in memory. Any data stored in memory (RAM) for faster access is called cache. Examples: Ehcache, Memcache Typically you put an object in cache with String as Key and access the cache using the Key. It is very straight forward. It depends on the application when to access the cache vs database and no complex processing happens in the Cache. If the cache spans multiple machines, then it is called distributed cache. For example, Netflix uses EVCAche which is built on top of Memcache to store the users movie recommendations that you see on the home screen.
 
 **In Memory Database** - It has all the features of a Cache plus come processing/querying capabilities. Redis falls under this category. Redis supports multiple data structures and you can query the data in the Redis ( examples like get last 10 accessed items, get the most used item etc). It can span multiple machine and is usually very high performant and also support persistence to disk if needed. For example, Twitter uses Redis database to store the timeline information.
+
+#### References
+
+### Authors
+
+* **The Philomath**
+* **Manish Kumar**
