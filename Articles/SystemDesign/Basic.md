@@ -86,6 +86,8 @@ Which entry should be removed from cache on a miss.
 4. MostRU
 5. LFU(Least Frequently Used, count the number of times a page is referred)
 6. Random Replacement
+7. ARC (Adaptive Replacement Cache) :  Introduced in 2003 by IBM (patent) which uses 4 LRU cache to maintain the cache. The intuition is to maintain 1 cache having elements that are accessed only once and the second LRU list having elements that are accessed more than once. For each LRU cache, there is a corresponding ghost cache whose size keeps changing based on some parameter. This cache policy is known to have better performance than the LRU scheme. For more information, kindly read the following paper  : [ARC paper](https://www.usenix.org/conference/fast-03/arc-self-tuning-low-overhead-replacement-cache)
+8. Offline MIN cache : When a new cache policy is introduced, we need a benchmarking policy which we can use to test the performance. In this policy, we know in advance the time at which the item will be requested next in the policy. So the item which will not be needed in the near future will be evicted. 
 
 ----
 ## Sharding or Data Partitioning:-  
