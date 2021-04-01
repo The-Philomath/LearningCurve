@@ -23,9 +23,10 @@ Few basic of C++
 * Don't store exception message in _std::string_ because exception can be raised due to new fail(Heap failure) and _std::string_ is using dynamic memory(Heap) to store the string.
 * Always throw by value but catch by reference because it is possible that someone in the call stack may want to modify the exception raised and want to extra info so that the further call stack can know that it has been raised by someone else.
 * integer exception can't be catch by float block but we can capture via inheritance tree.
-* `dependency inversion principle` -> High level modules should not depend upon low level modules. Both should depend upon abstractions.
-The Dependency Inversion Principle is basically a way of adding plugs and sockets to your code. It allows you to create your high level modules (the computer) independent of the low level modules (the mouse). The low level modules can be created later, and are easily replaceable. Plugs can be base classes with virtual methods; templating; possibly preprocessor function macros. The plug is essentially an abstract interface. All implementations/subclasses adhere to the Liskov Substitution Principle. This is because the implementations/subclasses will be used via the abstract interface, not the concrete class interface. The "sockets" are any functions or classes that use a "plug".
-The Open Closed Principle (OCP): You should be able to extend a classes behavior, without modifying it.
+* Aggregation and Composition are subsets of association meaning they are specific cases of association. In both aggregation and composition object of one class "owns" object of another class. But there is a subtle difference:
+Aggregation implies a relationship where the child can exist independently of the parent. Example: Class (parent) and Student (child). Delete the Class and the Students still exist.
+Composition implies a relationship where the child cannot exist independent of the parent. Example: House (parent) and Room (child). Rooms don't exist separate to a House.
+* The Open Closed Principle (OCP): You should be able to extend a classes behavior, without modifying it.
 * We can separate the defintion and declaration of templates in .cpp and .h but that's not a good practice. and the .cpp will not be a translation unit.  imagine a scenario where a template function is declared in a.h, defined in a.cpp and used in b.cpp. When a.cpp is compiled, it is not necessarily known that the upcoming compilation b.cpp will require an instance of the template
 injected-class-name  -> StoryTeller - Unslander Monica
 * Always use **RAII** wherever you can : RAII This is a strange name for a simple but awesome concept. Better is the name Scope Bound Resource Management (SBRM). The idea is that often you happen to allocate resources at the begin of a block, and need to release it at the exit of a block. Exiting the block can happen by normal flow control, jumping out of it, and even by an exception. To cover all these cases, the code becomes more complicated and redundant. Smart_ptr is away to implement RAII in C++.
@@ -88,3 +89,14 @@ In west const style, `const T` when `T` is `char*` is `char*const`. Surprising. 
 In east const style, `T const` when `T` is `char*` is `char*const`. Not surprising at all.
 * keywords we can use anywhere but identifies can only be used at certian specific places. We can define a variable with the identifier name.
 identifiers: final, override, import, module
+* If it is a reverse_iterator and we want to erase at that location then we should use either
+
+```cpp
+stackObj.erase( std::next(it).base() );
+```
+Or
+```cpp
+std::advance(it, 1);
+stackObj.erase( it.base() );
+```
+* Covariant return types(overloaded functions using base and derived types) works only with pointers and references not with objects or smart pointers.
