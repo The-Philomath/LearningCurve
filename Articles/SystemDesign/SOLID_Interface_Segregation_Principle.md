@@ -1,0 +1,1 @@
+Clients should not be forced to depend upon interfaces that they do not use. Instead of one fat interface many small interfaces are preferred based on groups of methods, each one serving one submodule.
