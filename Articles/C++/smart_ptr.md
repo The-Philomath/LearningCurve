@@ -240,6 +240,10 @@ Arrays with `shared_ptr` are a bit trickier that when using `unique_ptr`, but we
 
 We need to use custom `deleter` (here as a lambda expression). Additionally we cannot use `make_shared` construction.
 
+since C++17 this is also valid:-
+
+    std::shared_ptr<Test[]> tests(new Test[10]);
+
 **Passing a smart pointer to a function**
 
 Remember shared pointer is not a pointer which is shared but its pointer to the shared. Here pointee is shared.
