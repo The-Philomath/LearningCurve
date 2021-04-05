@@ -100,3 +100,5 @@ std::advance(it, 1);
 stackObj.erase( it.base() );
 ```
 * Covariant return types(overloaded functions using base and derived types) works only with pointers and references not with objects or smart pointers.
+* when the `new` operator is used to allocate memory and the handling function is unable to do so, a `bad_alloc` exception is thrown. But when `nothrow` is used as argument for `new`, it returns a `nullptr` instead.
+* There are three ways in C++ to initialize variables in a thread safe way. 1. Constant expressions 2. The function `std::call_once` in combination with the flag `std::once_flag` 3. Static variables with block scope

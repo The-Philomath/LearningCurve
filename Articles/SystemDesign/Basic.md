@@ -241,6 +241,46 @@ Client will immediately send re-request so that server can respond whenever it h
 
 **In Memory Database** - It has all the features of a Cache plus come processing/querying capabilities. Redis falls under this category. Redis supports multiple data structures and you can query the data in the Redis ( examples like get last 10 accessed items, get the most used item etc). It can span multiple machine and is usually very high performant and also support persistence to disk if needed. For example, Twitter uses Redis database to store the timeline information.
 
+----
+
+#### How to reduce latency of your system?
+
+**Use HTTP/2 instead of HTTP** - we can send multiple requests at once in http/2 and server combines the response of multiple requests in one response. CDN also helps to reduce latency. CDN is a type of cache which is near to user. Browser cache/cookies also helps to reduce it, static content is stored by browser like images, icons.
+
+----
+
+#### Message flow between two ends
+
+Message flows between sender and receiver can be Asynchronously or Synchronously.
+
+Asynchronous message flow is better because sender is not blocked. Sender sends the message to a queue and receiver can get message from whenever receiver comes online. Java message service(JMS) provide such type of service. Its also called as **queue based approach**. Queue based approach is a point to point communication.
+
+**Topic based approach** -> It works on pub-sub approach. Any number subscriber can subscribe to a topic. Its a one to many relation. JMS can also provide this type of service. One end is JMS Client. JMS provider(like active MQ) is the entity which receives message from JMS client.
+
+#### Kafka
+
+**Kafka** give higher throughput, reliability, and replication has made this technology replace conventional message brokers. Kafka can work with HBase, Flink, Flafka, and Spark for analysis and processing real-time data, which makes Kafka scalable as it allows us to build distributed applications.
+
+Whenever there is a continuous streams or real time streams of messages we should use Kafka. Kafka is highly available, scalable, and it follows pub-sub type of serivce. Kafka components are Kafka cluster(which is a combination of Kafka brokers), Kafka topic(named stream of records), partitions, consumers group, producer, consumer.
+
+For any scalable distributed system its always better to use Kafka as a message queue rather than Message queue or Active MQ
+
+**Kafka** is a huge system. It uses Apache zookeeper to manage its services.
+
+**Spark Streaming** use Kafka like system to get the required data on one of the kafka topic and generate real time analytical reports by using different algos like map, reduce.
+
+----
+
+The **Circuit breaker** pattern helps to prevent such a catastrophic cascading failure across multiple systems. The circuit breaker pattern allows you to build a fault tolerant and resilient system that can survive gracefully when key services are either unavailable or have high latency. It is used in microservice architecture.
+
+----
+
+latency vs consistency vs availability
+
+**Highly available system**:- To design this we can use the consistent hashing and keep multiple copies(known as replication factor) on multiple machines to handle the failure scenario.
+
+**Highly Consistent system**:- To design such system we can use multiple masters and make sure that if not all then a majority of systems should be updated with new data before sending the confirmation back to the client. A master node will act as a coordinator to manage this. But that will create a single point of failure. We can use a standby node that is getting all the updates same as of master through a shared file system.
+
 #### References
 
 ### Authors
