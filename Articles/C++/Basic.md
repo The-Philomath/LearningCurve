@@ -23,14 +23,9 @@ Few basic of C++
 * Don't store exception message in _std::string_ because exception can be raised due to new fail(Heap failure) and _std::string_ is using dynamic memory(Heap) to store the string.
 * Always throw by value but catch by reference because it is possible that someone in the call stack may want to modify the exception raised and want to extra info so that the further call stack can know that it has been raised by someone else.
 * integer exception can't be catch by float block but we can capture via inheritance tree.
-* Aggregation and Composition are subsets of association meaning they are specific cases of association. In both aggregation and composition object of one class "owns" object of another class. But there is a subtle difference:
-Aggregation implies a relationship where the child can exist independently of the parent. Example: Class (parent) and Student (child). Delete the Class and the Students still exist.
-Composition implies a relationship where the child cannot exist independent of the parent. Example: House (parent) and Room (child). Rooms don't exist separate to a House.
-* The Open Closed Principle (OCP): You should be able to extend a classes behavior, without modifying it.
 * We can separate the defintion and declaration of templates in .cpp and .h but that's not a good practice. and the .cpp will not be a translation unit.  imagine a scenario where a template function is declared in a.h, defined in a.cpp and used in b.cpp. When a.cpp is compiled, it is not necessarily known that the upcoming compilation b.cpp will require an instance of the template
 injected-class-name  -> StoryTeller - Unslander Monica
 * Always use **RAII** wherever you can : RAII This is a strange name for a simple but awesome concept. Better is the name Scope Bound Resource Management (SBRM). The idea is that often you happen to allocate resources at the begin of a block, and need to release it at the exit of a block. Exiting the block can happen by normal flow control, jumping out of it, and even by an exception. To cover all these cases, the code becomes more complicated and redundant. Smart_ptr is away to implement RAII in C++.
-
 * Either move ctor or move assignment operator disables generation of copy ctor/assignment.
 * Don't include header file use forward declaration instead.
 * `lock_gurad` will lock the undelying mutex and unlock it at the end of scope.

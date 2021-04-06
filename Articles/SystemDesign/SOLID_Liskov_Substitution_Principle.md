@@ -1,4 +1,4 @@
-* `LSV : Liskov Substitution Principle:`  Substitutability is a principle in object-oriented programming stating that, in a computer program, if S is a subtype of T, then objects of type T may be replaced with objects of type S. If it looks like a duck, quacks like a duck but need batteries. then you probably have the wrong abstraction.
+`LSV : Liskov Substitution Principle:`  Substitutability is a principle in object-oriented programming stating that, in a computer program, if S is a subtype of T, then objects of type T may be replaced with objects of type S. If it looks like a duck, quacks like a duck but need batteries. then you probably have the wrong abstraction.
 
 Functions that use pointers or references to base classes must be able to use objects of derived classes without knowing it.
 
