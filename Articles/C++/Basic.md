@@ -69,15 +69,14 @@ _std::set<int>_ target;
 * Calling virtual functions from a constructor or destructor is dangerous and should be avoided whenever possible. All C++ implementations should call the version of the function defined at the level of the hierarchy in the current constructor and no further. In a constructor, the virtual call mechanism is disabled because overriding from derived classes hasn’t yet happened. Objects are constructed from the base up, “base before derived”. Destruction is done “derived class before base class”, so virtual functions behave as in constructors: Only the local definitions are used – and no calls are made to overriding functions to avoid touching the (now destroyed) derived class part of the object.
 * In `C` When initializing an object of static or thread-local storage duration, every expression in the initializer must be a constant expression or string literal. Static variables are initialized prior to program startup. While in `C++` static local variables are initialized the first time control passes through their declaration. So they can point to a non constant variable also.
 *  When would the following code be false.
-```
+```cpp
 bool result  = (floatValue == floatValue);
 ```
 When `floatValue == NaN` //not a number like (0/0)
 * Pure virtual may have a body, although it is illegal to include it at the point of declaration. This means that to have a body the pure virtual function must be defined outside the class. Note that even if it has a body, the function must still be overridden by any concrete classes derived from Abstract. They would just have an option to call Abstract::pure_virtual() explicitly if they need to
 * dynamic_cast will return NULL on a bad cast if you are casting a pointer; it will throw std::bad_cast when casting references. It is a compile-time error to attempt to cast objects with dynamic_cast (eg, with dynamic_cast<Derived>(base))
-* `LSV : Liskov Substitution Principle:`  Substitutability is a principle in object-oriented programming stating that, in a computer program, if S is a subtype of T, then objects of type T may be replaced with objects of type S. If it looks like a duck, quacks like a duck but need batteries. then you probably have the wrong abstraction. Duck extend bird and ostrich extend bird. Bird have a fly function. This is violation of LSV. Ostrich can't fly. Correct abstraction will be flying_bird extend bird and fly function will be in flying_bird. Ostrich can now extend bird. Duck can extend flying_bird.
 * Vector of `bool` doesn't store `bool`s. It's basically a bitfield.
-```
+```cpp
 vector<bool> vb(20,true);
 auto b = vb[10]; //type of auto not necessarily be bool. From cppinsight its std::_bitreference
 bool *pb = &b; //error, cannot convert 'std::_Bit_reference*' to 'bool*' in initialization
