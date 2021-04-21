@@ -184,7 +184,7 @@ _Why we can't choose all three?_
 
 To be consistent, all nodes should see the same set of updates in the same order. But if the network suffers a partition, updates in one partition might not make it to the other partitions before a client reads from the out-of-date partition after having read from the up-to-date one. The only thing that can be done to cope with this possibility is to stop serving requests from the out-of-date partition, but then the service is no longer 100% available.
 
-Hint:- If data/indexes is so small that it can fit in a single machine then use SQL. If joins are required use SQL.
+Hint:- If data/indexes is so small that it can fit in a single machine then use SQL, for large size of data use NOSQL, Sharding overhead is very costly in SQL. If joins are required or data is in normalized form then use SQL. NOSQL stores a lot of duplicate data in denormalized form. Check if the system is write heavy. For write heavy systems NOSQL is better. IN SQL, Every write is not just an append to a table but also an update to multiple index which might require locking and hence might interfere with reads and other writes. Technology maturity is also a factor as SQL is quite mature and most of NOSQLs are new and can crash sometimes.
 
 ----
 ## Consistent Hashing
