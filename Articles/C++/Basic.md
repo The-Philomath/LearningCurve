@@ -28,7 +28,7 @@ injected-class-name  -> StoryTeller - Unslander Monica
 * Always use **RAII** wherever you can : RAII This is a strange name for a simple but awesome concept. Better is the name Scope Bound Resource Management (SBRM). The idea is that often you happen to allocate resources at the begin of a block, and need to release it at the exit of a block. Exiting the block can happen by normal flow control, jumping out of it, and even by an exception. To cover all these cases, the code becomes more complicated and redundant. Smart_ptr is away to implement RAII in C++.
 * Either move ctor or move assignment operator disables generation of copy ctor/assignment.
 * Don't include header file use forward declaration instead.
-* `lock_gurad` will lock the undelying mutex and unlock it at the end of scope.
+* `lock_gurad` will lock the underlying mutex and unlock it at the end of scope.
 * `decltype` keyword is not scope sensitive.
 * We must have to define templates in .h But specialized versions have to define in .cpp with prototype in .h
 * Function object or Functor is a function that has some state.
