@@ -38,6 +38,8 @@ Basics of concurrency.
 
 * Every thread has to have an initial function. This function is used as the starting point for thread.
 
+* `Hyper-threading` exposes multiple logical cores for a single physical CPU core. In simple terms, hyper-threading makes context-switching more efficient for each CPU core.
+
 #### References
 
 * Concurrency In action
