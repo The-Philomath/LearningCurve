@@ -76,6 +76,7 @@ In the first example extra parentheses prevent interpretation as a function decl
 
 The act of calling `join()` also cleans up any storage associated with the thread, the `std::thread` object is no longer associated with the now finished thread; it isn't associated with nay thread. This means that you can calls `join()` only once for a given thread; once you've called `join()`, the `std::thread` object is no longer joinable, and `joinable()` will return `false`.
 
+----
 #### Exception-safety
 An exception can be raised after starting the thread but before calling the `join()`. In this case application will get terminate as `terminate()` will get called.
 
@@ -114,6 +115,7 @@ threadGuard obj(t2); // no need to call join explicitly.
 
 `Thread` library is just like `unique_ptr`. At a time only one reference will be there. So when the reference is passed to the **threadGuard** class then the function which created the thread don't have any reference to the thread object.
 
+----
 #### Passing argument to thread function
 ```cpp
 void func(int i, std::string const& s);
@@ -130,6 +132,44 @@ To pass a non-const reference of a local variable we must use the `std::ref`.
 ```cpp
 std::thread t(func, 3, std::ref(people_obj));
 ```
+To pass a member function as the starting point of thread.
+```cpp
+X obj;
+std::thread t1(&X::memberFunc, &obj);
+```
+>Instances of `std::thread` are movable, even though they aren’t copyable.
+
+```cpp
+std::thread t1(some_function);
+std::thread t2=std::move(t1); // Ownership of thread associated with t1 is moved to t2
+```
+Ownership of a thread can be transferred into a function, it can accept an instance of `std::thread` by value as one of the parameters.
+```cpp
+void f(std::thread t);
+void g()
+{
+    void some_function();
+    f(std::thread(some_function));
+    std::thread t(some_function);
+    f(std::move(t));
+}
+```
+We can design a scoped_thread class which can manage its own thread by passing the newly created thread instance to the constructor.
+> **C++20**'s `std::jthread` is just like the scoped_thread
+
+**TODO:** implement jthread class
+
+#### Choosing the number of threads at Runtime
+`std::thread::hardware_concurrency()` returns the total number of threads that can truly run concurrently for a given execution of program. On a multi core machine it will give the number of cores. It's just a hint not always work.
+
+> Thread identifiers of type `std::thread::id`
+
+we can call `get_id()` function of thread object. If we need to check the thread if of current thread then we can call `std::this_thread::get_id()`.
+
+If the `std::thread` object doesn’t have an associated thread of execution, the call to `get_id()` returns a default-constructed `std::thread::id` object, which indicates "not any thread."
+
+`std::thread:id` can be the key of `std::hash`.
+
 
 #### References
 
