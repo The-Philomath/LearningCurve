@@ -61,6 +61,12 @@ The `std::adopt_lock` parameter to `std::lock_guard` can be supplied in addition
 
 **thread_local** declare a variable which has a separate copy for each thread.
 
+Instead of mutexes, `std::call_once()` can be used to handle the scenario of initialisation only once when multiple threads are trying to execute the initialisation code.
+
+ A **reader-writer mutex**, allows two different kinds of usage: exclusive access by a single “writer” thread or shared, and concurrent access by multiple “reader” threads. `std::shared_mutex` and `std::shared_timed_mutex` are those types of mutexes.
+
+ With `std::mutex`, it’s an error for a thread to try to lock a mutex it already owns, and attempting to do so will result in **undefined behavior**. If a thread wants to do that then we should use `std::recursive_mutex`.
+
 #### References
 
 * Concurrency In action
